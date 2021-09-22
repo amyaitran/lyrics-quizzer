@@ -22,13 +22,7 @@ button {
   cursor: pointer;
 }
 
-i {
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-ul {
+li {
   list-style-type: none;
 }
 
@@ -47,4 +41,16 @@ ul {
   padding: 1rem;
   margin: 1rem;
   box-shadow: 2px 5px 5px 0 rgba(0, 0, 0, 1);
+}
+
+#home {
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+#arrowUp,
+#arrowDown {
+  font-size: 1.5rem;
+  cursor: pointer;
 }

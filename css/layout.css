@@ -12,12 +12,20 @@
   flex-wrap: wrap;
 }
 
-.column-full, {
+.column-full {
   width: 100%;
 }
 
 .column-half {
   width: 50%;
+}
+
+.column-nine-tenths {
+  width: 90%;
+}
+
+.column-one-tenths {
+  width: 10%;
 }
 
 .center {

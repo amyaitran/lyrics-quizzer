@@ -1,13 +1,17 @@
-var $p = document.querySelector('p');
 var $form = document.querySelector('#input-form');
 var $song = document.querySelector('#song');
 var $artist = document.querySelector('#artist');
 var $searchBtn = document.querySelector('#search-btn');
 var $cards = document.querySelectorAll('.card');
 var $homeIcon = document.querySelector('i');
+var $divCardLyrics = document.querySelector('#card-lyrics');
+var $arrowUp = document.querySelector('#arrowUp');
+var $arrowDown = document.querySelector('#arrowDown');
 
 $searchBtn.addEventListener('click', handleSearch);
-$homeIcon.addEventListener('click', handleClick);
+$homeIcon.addEventListener('click', handleClickHome);
+$arrowUp.addEventListener('click', handleArrowUp);
+$arrowDown.addEventListener('click', handleArrowDown);
 
 function handleSearch(event) {
   event.preventDefault();
@@ -18,8 +22,18 @@ function handleSearch(event) {
   cardSwap('lyrics');
 }
 
-function handleClick(event) {
-  $p.textContent = '';
+function handleArrowUp(event) {
+  if (data.lyricCard !== 0) {
+    data.lyricCard--;
+  }
+  lyricsSwap(data.lyricCard);
+}
+function handleArrowDown(event) {
+  data.lyricCard++;
+  lyricsSwap(data.lyricCard);
+}
+
+function handleClickHome(event) {
   cardSwap('choose');
 }
 
@@ -40,11 +54,108 @@ function getLyrics(song, artist) {
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + sanitizedURL);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    // console.log(xhr.status);
+    // console.log(xhr.response);
     var $lyrics = xhr.response.message.body.lyrics.lyrics_body;
-    $p.textContent = $lyrics;
+    // console.log($lyrics);
+    putLyrics($lyrics);
+    data.lyricCard = 1;
+    lyricsSwap(data.lyricCard);
   });
   xhr.send();
 }
+
+/* <div class="card hidden" data-view="lyrics">
+    <h2 class="center">Fill in the lyrics!</h2>
+    <ul lyric-card="1">
+      <p lyric-line="0">Lately I've been hard to reach</p>
+      <p lyric-line="1">I've been too long on my own</p>
+      <p lyric-line="2">Everybody has a private world where they can be alone</p>
+    </ul>
+    <ul lyric-card="2">
+      <p lyric-line="3">Lately I've been hard to reach</p>
+      <p lyric-line="4">I've been too long on my own</p>
+      <p lyric-line="5">Everybody has a private world where they can be alone</p>
+    </ul>
+    <ul lyric-card="3">
+      <p lyric-line="6">Lately I've been hard to reach</p>
+      <p lyric-line="7">I've been too long on my own</p>
+      <p lyric-line="8">Everybody has a private world where they can be alone</p>
+    </ul>
+   </div> */
+
+function putLyrics(lyrics) {
+  var lyricsArray = [];
+  lyricsArray = lyrics.split('\n');
+  var count = 0;
+  var cardCount = 1;
+  for (var i = 0; i < lyricsArray.length - 3; i += 3) {
+    var lyricLi = document.createElement('li');
+    var lyricP1 = document.createElement('p');
+    var lyricP2 = document.createElement('p');
+    var lyricP3 = document.createElement('p');
+    lyricLi.setAttribute('lyric-card', cardCount);
+    lyricLi.setAttribute('class', 'lyrics');
+    lyricLi.append(lyricP1, lyricP2, lyricP3);
+    lyricP1.setAttribute('lyric-line', count);
+    lyricP1.textContent = lyricsArray[count];
+    count++;
+    lyricP2.setAttribute('lyric-line', count);
+    lyricP2.textContent = lyricsArray[count];
+    count++;
+    lyricP3.setAttribute('lyric-line', count);
+    lyricP3.textContent = lyricsArray[count];
+    count++;
+    cardCount++;
+    $divCardLyrics.append(lyricLi);
+  }
+}
+
+function lyricsSwap(lyricCard) {
+  var $cardLyrics = document.querySelectorAll('.lyrics');
+  // console.log('swapping lyric cards');
+  // console.log('$cardlyrics', $cardLyrics);
+  for (var i = 0; i < $cardLyrics.length; i++) {
+    if (parseInt($cardLyrics[i].getAttribute('lyric-card')) === lyricCard) {
+      // console.log('matched: show');
+      $cardLyrics[i].className = 'lyrics';
+    } else {
+      // console.log('not a match: hide');
+      $cardLyrics[i].className = 'lyrics hidden';
+    }
+  }
+}
+
+// function putLyrics(lyrics) {
+//   var lyricsArray = [];
+//   lyricsArray = lyrics.split('\n');
+//   // console.log('lyricsArray', lyricsArray);
+//   var count = 0;
+//   var cardCount = 1;
+//   for (var i = 0; i < lyricsArray.length - 3; i++) {
+//     var lyricUl = document.createElement('ul');
+//     var lyricDiv = document.createElement('div');
+//     var lyricP = document.createElement('p');
+//     lyricUl.append(lyricDiv);
+//     lyricUl.setAttribute('lyric-card', cardCount);
+//     lyricDiv.append(lyricP);
+//     lyricDiv.setAttribute('lyric-line', count);
+//     lyricP.textContent = lyricsArray[count];
+//     count++;
+//     // $ul.append(lyricDiv);
+//     // $ul.setAttribute('lyric-card', cardCount);
+//     cardCount++;
+//     $divCardLyrics.append(lyricUl);
+//   }
+// }
+
+// $ul.append(lyricsArray[0], lyricsArray[1], lyricsArray[2]);
+// $p.textContent = $lyrics;
+// var count = 0;
+// for (var i = count; i < count + 3;) {
+//   $ul.append(lyricsArray[count]);
+//   count++;
+// }
 
 // getSampleData()
 
