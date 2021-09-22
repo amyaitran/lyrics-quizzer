@@ -34,6 +34,9 @@ function handleArrowDown(event) {
 }
 
 function handleClickHome(event) {
+  while ($divCardLyrics.firstChild) {
+    $divCardLyrics.removeChild($divCardLyrics.firstChild);
+  }
   cardSwap('choose');
 }
 
@@ -59,7 +62,6 @@ function getLyrics(song, artist) {
     var $lyrics = xhr.response.message.body.lyrics.lyrics_body;
     // console.log($lyrics);
     putLyrics($lyrics);
-    data.lyricCard = 1;
     lyricsSwap(data.lyricCard);
   });
   xhr.send();
@@ -88,27 +90,34 @@ function putLyrics(lyrics) {
   var lyricsArray = [];
   lyricsArray = lyrics.split('\n');
   var count = 0;
-  var cardCount = 1;
-  for (var i = 0; i < lyricsArray.length - 3; i += 3) {
-    var lyricLi = document.createElement('li');
-    var lyricP1 = document.createElement('p');
-    var lyricP2 = document.createElement('p');
-    var lyricP3 = document.createElement('p');
-    lyricLi.setAttribute('lyric-card', cardCount);
-    lyricLi.setAttribute('class', 'lyrics');
-    lyricLi.append(lyricP1, lyricP2, lyricP3);
-    lyricP1.setAttribute('lyric-line', count);
-    lyricP1.textContent = lyricsArray[count];
-    count++;
-    lyricP2.setAttribute('lyric-line', count);
-    lyricP2.textContent = lyricsArray[count];
-    count++;
-    lyricP3.setAttribute('lyric-line', count);
-    lyricP3.textContent = lyricsArray[count];
-    count++;
-    cardCount++;
-    $divCardLyrics.append(lyricLi);
+  var cardCount = 0;
+  for (var i = 0; i < lyricsArray.length; i += 3) {
+    if (lyricsArray[i] === '...') {
+      break;
+    } else if (lyricsArray[i] !== '') {
+      var lyricLi = document.createElement('li');
+      var lyricP1 = document.createElement('p');
+      var lyricP2 = document.createElement('p');
+      var lyricP3 = document.createElement('p');
+      lyricLi.setAttribute('lyric-card', cardCount);
+      lyricLi.setAttribute('class', 'lyrics');
+      lyricLi.append(lyricP1, lyricP2, lyricP3);
+      lyricP1.setAttribute('lyric-line', count);
+      lyricP1.textContent = lyricsArray[count];
+      count++;
+      lyricP2.setAttribute('lyric-line', count);
+      lyricP2.textContent = lyricsArray[count];
+      count++;
+      lyricP3.setAttribute('lyric-line', count);
+      lyricP3.textContent = lyricsArray[count];
+      count++;
+      cardCount++;
+      $divCardLyrics.append(lyricLi);
+    } else {
+      count++;
+    }
   }
+  randomizeMissingLyrics('0');
 }
 
 function lyricsSwap(lyricCard) {
@@ -122,6 +131,27 @@ function lyricsSwap(lyricCard) {
     } else {
       // console.log('not a match: hide');
       $cardLyrics[i].className = 'lyrics hidden';
+    }
+  }
+}
+
+function randomizeMissingLyrics(lyricCardNumber) {
+  var $cardLyrics = document.querySelectorAll('.lyrics');
+  for (var i = 0; i < $cardLyrics.length; i++) {
+    if (lyricCardNumber === $cardLyrics[i].getAttribute('lyric-card')) {
+      var $p = $cardLyrics[i].querySelectorAll('p');
+      var randomLine = Math.floor(Math.random() * $p.length);
+      for (var j = 0; j < $p.length; j++) {
+        if ($p[j].getAttribute('lyric-line') === randomLine.toString()) {
+          var wordsRandomLine = $p[j].textContent.split(' ');
+          var randomWord = Math.floor(Math.random() * wordsRandomLine.length);
+          var randomActualWords = '';
+          randomActualWords = wordsRandomLine[randomWord] + ' ' + wordsRandomLine[randomWord + 1];
+          data.missingWords.push(randomActualWords);
+          wordsRandomLine.splice(randomWord, 2, '_______');
+          $p[j].textContent = wordsRandomLine.join(' ');
+        }
+      }
     }
   }
 }

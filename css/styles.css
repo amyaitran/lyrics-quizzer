@@ -26,8 +26,10 @@ li {
   list-style-type: none;
 }
 
-.blue {
-  background-color: blue;
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .white-line {
@@ -41,6 +43,10 @@ li {
   padding: 1rem;
   margin: 1rem;
   box-shadow: 2px 5px 5px 0 rgba(0, 0, 0, 1);
+}
+
+#lyrics {
+  padding: 0 0 2rem 2rem;
 }
 
 #home {
