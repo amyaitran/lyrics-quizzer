@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap" rel="stylesheet">
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
   <link rel="stylesheet" href="css/reset.css">
@@ -10,10 +13,59 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
   <header>
+    <div class="row white-line">
+
+      <div class="column-half center">
+        <h1>Lyrics App</h1>
+      </div>
+
+      <div class="column-half center">
+        <i class="fas fa-home"></i>
+      </div>
+
+    </div>
   </header>
+
   <main>
+      <div class="container">
+    <div class="row">
+      <div class="column-full">
+        <div class="card" data-view="choose">
+          <h2 class="center">Choose a song!</h2>
+          <form id="input-form">
+
+            <div class="row center">
+              <label for="title">
+                <h4>Song Title:</h4>
+              </label>
+              <input required name="song" id="song" type="text">
+            </div>
+
+            <div class="row center">
+              <label for="title">
+                <h4>Artist:</h4>
+              </label>
+              <input required name="artist" id="artist" type="text">
+            </div>
+
+            <div class="row center">
+              <button id="search-btn" type="submit">Search</button>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="card hidden" data-view="lyrics">
+          <h2 class="center">Fill in the lyrics!</h2>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </div>
   </main>
+  <script src="https://kit.fontawesome.com/51e06843cc.js" crossorigin="anonymous"></script>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
