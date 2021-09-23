@@ -59,14 +59,3 @@
   right: -1.5rem;
   bottom: 1rem;
 }
-
-@media screen and (min-width: 768px) {
-  /* .container {
-    max-width: 900px;
-  }
-
-  .column-full,
-  .column-half {
-    padding: 0 0.75rem;
-  } */
-}
