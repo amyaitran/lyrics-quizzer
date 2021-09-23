@@ -28,8 +28,36 @@
   width: 10%;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .mb-1 {
   margin-bottom: 1rem;
+}
+
+.margin-top {
+  margin-top: 2rem;
+}
+
+.pos-rel {
+  position: relative;
+}
+
+.pos-abs {
+  position: absolute;
+}
+
+#arrowUp {
+  right: -1.5rem;
+  top: 1rem;
+}
+
+#arrowDown {
+  right: -1.5rem;
+  bottom: 1rem;
 }
 
 @media screen and (min-width: 768px) {

@@ -7,6 +7,8 @@ var $homeIcon = document.querySelector('i');
 var $divCardLyrics = document.querySelector('#card-lyrics');
 var $arrowUp = document.querySelector('#arrowUp');
 var $arrowDown = document.querySelector('#arrowDown');
+var $songHeading = document.querySelector('#songHeading');
+var $artistHeading = document.querySelector('#artistHeading');
 
 $searchBtn.addEventListener('click', handleSearch);
 $homeIcon.addEventListener('click', handleClickHome);
@@ -19,17 +21,43 @@ function handleSearch(event) {
   var $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
   $form.reset();
+  $songHeading.textContent = '"' + capitalizeWords($songValue) + '"';
+  $artistHeading.textContent = 'by ' + capitalizeWords($artistValue);
   cardSwap('lyrics');
 }
 
+function capitalizeWords(string) {
+  var lowerCased = string.toLowerCase();
+  var upperCased = string.toUpperCase();
+  var output = upperCased[0];
+  for (var i = 1; i < string.length; i++) {
+    if (string[i - 1] === ' ') {
+      output += upperCased[i];
+    } else {
+      output += lowerCased[i];
+    }
+  }
+  return output;
+}
+
 function handleArrowUp(event) {
-  if (data.lyricCard !== 0) {
+  $arrowDown.className = 'pos-abs fas fa-angle-down';
+  if (data.lyricCard === 1) {
+    data.lyricCard--;
+    $arrowUp.className = 'hidden pos-abs fas fa-angle-up';
+  } else {
     data.lyricCard--;
   }
   lyricsSwap(data.lyricCard);
 }
+
 function handleArrowDown(event) {
-  data.lyricCard++;
+  $arrowUp.className = 'pos-abs fas fa-angle-up';
+  if (data.lyricCard === data.totalLyricCards - 1) {
+    $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+  } else {
+    data.lyricCard++;
+  }
   lyricsSwap(data.lyricCard);
 }
 
@@ -37,6 +65,10 @@ function handleClickHome(event) {
   while ($divCardLyrics.firstChild) {
     $divCardLyrics.removeChild($divCardLyrics.firstChild);
   }
+  $songHeading.textContent = '';
+  $artistHeading.textContent = '';
+  data.lyricCard = 0;
+  data.missingWords = [];
   cardSwap('choose');
 }
 
@@ -50,6 +82,17 @@ function cardSwap(card) {
   }
 }
 
+function lyricsSwap(lyricCard) {
+  var $cardLyrics = document.querySelectorAll('.lyrics');
+  for (var i = 0; i < $cardLyrics.length; i++) {
+    if (parseInt($cardLyrics[i].getAttribute('lyric-card')) === lyricCard) {
+      $cardLyrics[i].className = 'lyrics';
+    } else {
+      $cardLyrics[i].className = 'lyrics hidden';
+    }
+  }
+}
+
 function getLyrics(song, artist) {
   var xhr = new XMLHttpRequest();
   var url = 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + song + '&q_artist=' + artist + '&apikey=ede8285d3054993fe551720e102aa1a6';
@@ -57,38 +100,15 @@ function getLyrics(song, artist) {
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + sanitizedURL);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    // console.log(xhr.status);
-    // console.log(xhr.response);
     var $lyrics = xhr.response.message.body.lyrics.lyrics_body;
-    // console.log($lyrics);
     putLyrics($lyrics);
     lyricsSwap(data.lyricCard);
   });
   xhr.send();
 }
 
-/* <div class="card hidden" data-view="lyrics">
-    <h2 class="center">Fill in the lyrics!</h2>
-    <ul lyric-card="1">
-      <p lyric-line="0">Lately I've been hard to reach</p>
-      <p lyric-line="1">I've been too long on my own</p>
-      <p lyric-line="2">Everybody has a private world where they can be alone</p>
-    </ul>
-    <ul lyric-card="2">
-      <p lyric-line="3">Lately I've been hard to reach</p>
-      <p lyric-line="4">I've been too long on my own</p>
-      <p lyric-line="5">Everybody has a private world where they can be alone</p>
-    </ul>
-    <ul lyric-card="3">
-      <p lyric-line="6">Lately I've been hard to reach</p>
-      <p lyric-line="7">I've been too long on my own</p>
-      <p lyric-line="8">Everybody has a private world where they can be alone</p>
-    </ul>
-   </div> */
-
 function putLyrics(lyrics) {
-  var lyricsArray = [];
-  lyricsArray = lyrics.split('\n');
+  var lyricsArray = lyrics.split('\n');
   var count = 0;
   var cardCount = 0;
   for (var i = 0; i < lyricsArray.length; i += 3) {
@@ -116,92 +136,22 @@ function putLyrics(lyrics) {
     } else {
       count++;
     }
+    data.totalLyricCards++;
   }
-  randomizeMissingLyrics('0');
-}
-
-function lyricsSwap(lyricCard) {
-  var $cardLyrics = document.querySelectorAll('.lyrics');
-  // console.log('swapping lyric cards');
-  // console.log('$cardlyrics', $cardLyrics);
-  for (var i = 0; i < $cardLyrics.length; i++) {
-    if (parseInt($cardLyrics[i].getAttribute('lyric-card')) === lyricCard) {
-      // console.log('matched: show');
-      $cardLyrics[i].className = 'lyrics';
-    } else {
-      // console.log('not a match: hide');
-      $cardLyrics[i].className = 'lyrics hidden';
-    }
+  for (var j = 0; j < cardCount; j++) {
+    randomizeMissingLyrics(j.toString());
   }
 }
 
 function randomizeMissingLyrics(lyricCardNumber) {
   var $cardLyrics = document.querySelectorAll('.lyrics');
-  for (var i = 0; i < $cardLyrics.length; i++) {
-    if (lyricCardNumber === $cardLyrics[i].getAttribute('lyric-card')) {
-      var $p = $cardLyrics[i].querySelectorAll('p');
-      var randomLine = Math.floor(Math.random() * $p.length);
-      for (var j = 0; j < $p.length; j++) {
-        if ($p[j].getAttribute('lyric-line') === randomLine.toString()) {
-          var wordsRandomLine = $p[j].textContent.split(' ');
-          var randomWord = Math.floor(Math.random() * wordsRandomLine.length);
-          var randomActualWords = '';
-          randomActualWords = wordsRandomLine[randomWord] + ' ' + wordsRandomLine[randomWord + 1];
-          data.missingWords.push(randomActualWords);
-          wordsRandomLine.splice(randomWord, 2, '_______');
-          $p[j].textContent = wordsRandomLine.join(' ');
-        }
-      }
-    }
-  }
+  var $p = $cardLyrics[lyricCardNumber].querySelectorAll('p');
+  var randomLine = Math.floor(Math.random() * $p.length);
+  var wordsOfRandomLine = $p[randomLine].textContent.split(' ');
+  var randomIndex = Math.floor(Math.random() * wordsOfRandomLine.length);
+  var randomActualWords = '';
+  randomActualWords = wordsOfRandomLine[randomIndex] + ' ' + wordsOfRandomLine[randomIndex + 1];
+  data.missingWords.push(randomActualWords);
+  wordsOfRandomLine.splice(randomIndex, 2, '_______');
+  $p[randomLine].textContent = wordsOfRandomLine.join(' ');
 }
-
-// function putLyrics(lyrics) {
-//   var lyricsArray = [];
-//   lyricsArray = lyrics.split('\n');
-//   // console.log('lyricsArray', lyricsArray);
-//   var count = 0;
-//   var cardCount = 1;
-//   for (var i = 0; i < lyricsArray.length - 3; i++) {
-//     var lyricUl = document.createElement('ul');
-//     var lyricDiv = document.createElement('div');
-//     var lyricP = document.createElement('p');
-//     lyricUl.append(lyricDiv);
-//     lyricUl.setAttribute('lyric-card', cardCount);
-//     lyricDiv.append(lyricP);
-//     lyricDiv.setAttribute('lyric-line', count);
-//     lyricP.textContent = lyricsArray[count];
-//     count++;
-//     // $ul.append(lyricDiv);
-//     // $ul.setAttribute('lyric-card', cardCount);
-//     cardCount++;
-//     $divCardLyrics.append(lyricUl);
-//   }
-// }
-
-// $ul.append(lyricsArray[0], lyricsArray[1], lyricsArray[2]);
-// $p.textContent = $lyrics;
-// var count = 0;
-// for (var i = count; i < count + 3;) {
-//   $ul.append(lyricsArray[count]);
-//   count++;
-// }
-
-// getSampleData()
-
-// function getSampleData() {
-//   var xhr = new XMLHttpRequest();
-//   var url = 'http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=15953433&apikey=ede8285d3054993fe551720e102aa1a6';
-//   var sanitizedURL = encodeURIComponent(url)
-//   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + sanitizedURL);
-//   xhr.responseType = 'json';
-//   xhr.addEventListener('load', function () {
-//     console.log(xhr.status);
-//     console.log(xhr.response);
-//   });
-//   xhr.send();
-// }
-// getSampleData()
-
-// key
-// ede8285d3054993fe551720e102aa1a6

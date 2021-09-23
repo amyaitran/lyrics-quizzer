@@ -7,18 +7,28 @@ h1 {
   color: white;
 }
 
+h2 {
+  border-bottom: 1px solid lightgray;
+}
+
+h3 {
+  margin: 0;
+  color: white;
+}
+
 h2,
+h3,
 h4 {
   font-weight: 400;
 }
 
 button {
-  border-radius: 0.2rem;
+  border-radius: 0.6rem;
   margin: 1rem 0;
   padding: 0.6rem 1rem;
   border: none;
   color: white;
-  background-color: blue;
+  background-color: rgb(1, 123, 255);
   cursor: pointer;
 }
 
@@ -26,10 +36,12 @@ li {
   list-style-type: none;
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+input {
+  margin: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 8px;
+  border: lightgray 1px solid;
+  box-shadow: 1px 2px 2px 0 rgb(201, 201, 201);
 }
 
 .white-line {
@@ -38,7 +50,7 @@ li {
 
 .card {
   background-color: white;
-  width: 550px;
+  width: 500px;
   border-radius: 5rem;
   padding: 1rem;
   margin: 1rem;
@@ -46,7 +58,7 @@ li {
 }
 
 #lyrics {
-  padding: 0 0 2rem 2rem;
+  padding: 0 4rem 2rem 3rem;
 }
 
 #home {

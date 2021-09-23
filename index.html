@@ -13,21 +13,16 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
   <header>
     <div class="row white-line">
-
       <div class="column-half center">
         <h1>Lyrics App</h1>
       </div>
-
       <div class="column-half center">
         <i id="home" class="fas fa-home"></i>
       </div>
-
     </div>
   </header>
-
   <main>
       <div class="container">
     <div class="row">
@@ -35,54 +30,42 @@
         <div class="card" data-view="choose">
           <h2 class="center">Choose a song!</h2>
           <form id="input-form">
-
             <div class="row center">
               <label for="title">
                 <h4>Song Title:</h4>
               </label>
               <input required name="song" id="song" type="text">
             </div>
-
             <div class="row center">
               <label for="title">
                 <h4>Artist:</h4>
               </label>
               <input required name="artist" id="artist" type="text">
             </div>
-
             <div class="row center">
               <button id="search-btn" type="submit">Search</button>
             </div>
-
           </form>
         </div>
-<!-- <h3>"Song Title"</h3>
-<h3>by Fleetwood Mac</h3> -->
-        <div id="lyrics" class="card " data-view="lyrics">
-
-          <div class="row">
-            <div class="column-full">
-              <h2 class="center">Fill in the lyrics!</h2>
-            </div>
+        <div class="row" data-view="lyrics">
+          <div class="column-full margin-top">
+            <h3 id="songHeading" class="center"></h3>
+            <h3 id="artistHeading" class="center"></h3>
           </div>
-
-          <div class="row">
-
-            <div id="card-lyrics" class="column-nine-tenths">
-              <ul></ul>
-            </div>
-
-            <div class="column-one-tenths">
-              <div class="center">
-                <i id="arrowUp" class="fas fa-angle-up"></i>
-              </div>
-              <div class="center">
-                <i id="arrowDown" class="fas fa-angle-down"></i>
+          <div id="lyrics" class="hidden card" data-view="lyrics">
+            <div class="row">
+              <div class="column-full">
+                <h2 class="center">Fill in the lyrics!</h2>
               </div>
             </div>
-
+            <div class="row pos-rel">
+              <div id="card-lyrics" class="column-full">
+                <ul></ul>
+              </div>
+              <i id="arrowUp" class="hidden pos-abs fas fa-angle-up"></i>
+              <i id="arrowDown" class="pos-abs fas fa-angle-down"></i>
+            </div>
           </div>
-
         </div>
       </div>
     </div>
