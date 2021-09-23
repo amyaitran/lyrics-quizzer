@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap" rel="stylesheet">
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
   <link rel="stylesheet" href="css/reset.css">
@@ -11,9 +14,64 @@
 </head>
 <body>
   <header>
+    <div class="row white-line">
+      <div class="column-half center">
+        <h1>Lyrics App</h1>
+      </div>
+      <div class="column-half center">
+        <i id="home" class="fas fa-home"></i>
+      </div>
+    </div>
   </header>
   <main>
+      <div class="container">
+    <div class="row">
+      <div class="column-full">
+        <div class="card" data-view="choose">
+          <h2 class="center">Choose a song!</h2>
+          <form id="input-form">
+            <div class="row center">
+              <label for="title">
+                <h4>Song Title:</h4>
+              </label>
+              <input required name="song" id="song" type="text">
+            </div>
+            <div class="row center">
+              <label for="title">
+                <h4>Artist:</h4>
+              </label>
+              <input required name="artist" id="artist" type="text">
+            </div>
+            <div class="row center">
+              <button id="search-btn" type="submit">Search</button>
+            </div>
+          </form>
+        </div>
+        <div class="row" data-view="lyrics">
+          <div class="column-full margin-top">
+            <h3 id="songHeading" class="center"></h3>
+            <h3 id="artistHeading" class="center"></h3>
+          </div>
+          <div id="lyrics" class="hidden card" data-view="lyrics">
+            <div class="row">
+              <div class="column-full">
+                <h2 class="center">Fill in the lyrics!</h2>
+              </div>
+            </div>
+            <div class="row pos-rel">
+              <div id="card-lyrics" class="column-full">
+                <ul></ul>
+              </div>
+              <i id="arrowUp" class="hidden pos-abs fas fa-angle-up"></i>
+              <i id="arrowDown" class="pos-abs fas fa-angle-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </main>
+  <script src="https://kit.fontawesome.com/51e06843cc.js" crossorigin="anonymous"></script>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
