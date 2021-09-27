@@ -53,8 +53,18 @@ input {
   width: 500px;
   border-radius: 5rem;
   padding: 1rem;
-  margin: 1rem;
+  margin: 1rem auto;
   box-shadow: 2px 5px 5px 0 rgba(0, 0, 0, 1);
+}
+
+.correct {
+  color: green;
+  text-decoration: underline;
+}
+
+.incorrect {
+  color: red;
+  text-decoration: underline;
 }
 
 #lyrics {
@@ -71,4 +81,10 @@ input {
 #arrowDown {
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+#lyrics-input {
+  padding: 0.5rem;
+  background-color: rgba(87, 204, 153, 0.12);
+  border: 1px solid black;
 }
