@@ -27,7 +27,7 @@ function handleSearch(event) {
   $form.reset();
   $songHeading.textContent = '"' + capitalizeWords($songValue) + '"';
   $artistHeading.textContent = 'by ' + capitalizeWords($artistValue);
-  $cardIndicator.textContent = data.lyricCard + '/' + data.totalLyricCards;
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   cardSwap('lyrics');
 }
 
@@ -53,7 +53,7 @@ function handleArrowUp(event) {
   } else {
     data.lyricCard--;
   }
-  $cardIndicator.textContent = data.lyricCard + '/' + (data.totalLyricCards - 1);
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
 
@@ -65,7 +65,7 @@ function handleArrowDown(event) {
   } else {
     data.lyricCard++;
   }
-  $cardIndicator.textContent = data.lyricCard + '/' + (data.totalLyricCards - 1);
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
 
@@ -151,7 +151,7 @@ function putLyrics(lyrics) {
   for (var j = 0; j < cardCount; j++) {
     randomizeMissingLyrics(j.toString());
   }
-  $cardIndicator.textContent = data.lyricCard + '/' + (data.totalLyricCards - 1);
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
 }
 
 function randomizeMissingLyrics(lyricCardNumber) {
@@ -201,6 +201,6 @@ function handleSubmit(event) {
   $lyricsInput.value = '';
   data.lyricCard++;
   $arrowUp.className = 'pos-abs fas fa-angle-up';
-  $cardIndicator.textContent = data.lyricCard + '/' + data.totalLyricCards;
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
