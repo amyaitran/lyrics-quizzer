@@ -179,22 +179,19 @@ function handleSubmit(event) {
   var $cardLyrics = document.querySelectorAll('.lyrics');
   var $p = $cardLyrics[data.lyricCard].querySelectorAll('p');
   var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
-
   data.submittedWords.push($lyricsInput.value);
   var $wordsOfInput = $lyricsInput.value.split(' ');
-  if ($wordsOfInput[0] === data.missingWords[data.lyricCard][0]) {
-    $span[0].className = 'correct';
-    $span[0].textContent = data.missingWords[data.lyricCard][0] + ' ';
-  } else {
-    $span[0].className = 'incorrect';
-    $span[0].textContent = data.missingWords[data.lyricCard][0] + ' ';
-  }
-  if ($wordsOfInput[1] === data.missingWords[data.lyricCard][1]) {
-    $span[1].className = 'correct';
-    $span[1].textContent = data.missingWords[data.lyricCard][1];
-  } else {
-    $span[1].className = 'incorrect';
-    $span[1].textContent = data.missingWords[data.lyricCard][1];
+  for (var i = 0; i < $wordsOfInput.length; i++) {
+    if (i === $wordsOfInput.length - 1) {
+      $span[i].textContent = data.missingWords[data.lyricCard][i];
+    } else {
+      $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+    }
+    if ($wordsOfInput[i] === data.missingWords[data.lyricCard][i]) {
+      $span[i].className = 'correct';
+    } else {
+      $span[i].className = 'incorrect';
+    }
   }
   $lyricsInput.value = '';
   data.lyricCard++;
