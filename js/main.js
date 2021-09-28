@@ -181,18 +181,23 @@ function handleSubmit(event) {
   var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
   data.submittedWords.push($lyricsInput.value);
   var $wordsOfInput = $lyricsInput.value.split(' ');
+
   for (var i = 0; i < $wordsOfInput.length; i++) {
-    if (i === $wordsOfInput.length - 1) {
+    if ($wordsOfInput[i] === data.missingWords[data.lyricCard][i] && i === $wordsOfInput.length - 1) {
       $span[i].textContent = data.missingWords[data.lyricCard][i];
+      $span[i].className = 'correct';
+    } else if ($wordsOfInput[i] !== data.missingWords[data.lyricCard][i] && i !== $wordsOfInput.length) {
+      $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      $span[i].className = 'incorrect';
+    } else if ($wordsOfInput[i] !== data.missingWords[data.lyricCard][i] && i === $wordsOfInput.length - 1) {
+      $span[i].textContent = data.missingWords[data.lyricCard][i];
+      $span[i].className = 'incorrect';
     } else {
       $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
-    }
-    if ($wordsOfInput[i] === data.missingWords[data.lyricCard][i]) {
       $span[i].className = 'correct';
-    } else {
-      $span[i].className = 'incorrect';
     }
   }
+
   $lyricsInput.value = '';
   data.lyricCard++;
   $arrowUp.className = 'pos-abs fas fa-angle-up';
