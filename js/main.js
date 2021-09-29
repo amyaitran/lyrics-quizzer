@@ -183,18 +183,22 @@ function handleSubmit(event) {
   var $wordsOfInput = $lyricsInput.value.split(' ');
 
   for (var i = 0; i < $wordsOfInput.length; i++) {
-    if ($wordsOfInput[i] === data.missingWords[data.lyricCard][i] && i === $wordsOfInput.length - 1) {
-      $span[i].textContent = data.missingWords[data.lyricCard][i];
+    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('');
+    var noCaps = strippedWords.toLowerCase();
+    if ($wordsOfInput[i] === strippedWords || $wordsOfInput[i] === noCaps) {
       $span[i].className = 'correct';
-    } else if ($wordsOfInput[i] !== data.missingWords[data.lyricCard][i] && i !== $wordsOfInput.length) {
-      $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
-      $span[i].className = 'incorrect';
-    } else if ($wordsOfInput[i] !== data.missingWords[data.lyricCard][i] && i === $wordsOfInput.length - 1) {
-      $span[i].textContent = data.missingWords[data.lyricCard][i];
-      $span[i].className = 'incorrect';
+      if (i === $wordsOfInput.length - 1) {
+        $span[i].textContent = data.missingWords[data.lyricCard][i];
+      } else {
+        $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      }
     } else {
-      $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
-      $span[i].className = 'correct';
+      $span[i].className = 'incorrect';
+      if (i === $wordsOfInput.length - 1) {
+        $span[i].textContent = data.missingWords[data.lyricCard][i];
+      } else {
+        $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      }
     }
   }
 
