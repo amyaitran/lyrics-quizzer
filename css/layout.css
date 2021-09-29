@@ -26,6 +26,10 @@
   align-items: center;
 }
 
+.text-align {
+  text-align: center;
+}
+
 .mb-1 {
   margin-bottom: 1rem;
 }
