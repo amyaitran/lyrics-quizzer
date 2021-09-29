@@ -9,11 +9,15 @@ var $arrowUp = document.querySelector('#arrowUp');
 var $arrowDown = document.querySelector('#arrowDown');
 var $songHeading = document.querySelector('#songHeading');
 var $artistHeading = document.querySelector('#artistHeading');
+var $lyricsInput = document.querySelector('#lyrics-input');
+var $nextBtn = document.querySelector('#next-btn');
+var $cardIndicator = document.querySelector('h5');
 
 $searchBtn.addEventListener('click', handleSearch);
 $homeIcon.addEventListener('click', handleClickHome);
 $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
+$nextBtn.addEventListener('click', handleSubmit);
 
 function handleSearch(event) {
   event.preventDefault();
@@ -23,6 +27,7 @@ function handleSearch(event) {
   $form.reset();
   $songHeading.textContent = '"' + capitalizeWords($songValue) + '"';
   $artistHeading.textContent = 'by ' + capitalizeWords($artistValue);
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   cardSwap('lyrics');
 }
 
@@ -48,16 +53,19 @@ function handleArrowUp(event) {
   } else {
     data.lyricCard--;
   }
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
 
 function handleArrowDown(event) {
   $arrowUp.className = 'pos-abs fas fa-angle-up';
-  if (data.lyricCard === data.totalLyricCards - 1) {
+  if (data.lyricCard === data.totalLyricCards - 2) {
+    data.lyricCard++;
     $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
   } else {
     data.lyricCard++;
   }
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
 
@@ -67,8 +75,11 @@ function handleClickHome(event) {
   }
   $songHeading.textContent = '';
   $artistHeading.textContent = '';
+  $arrowDown.className = 'pos-abs fas fa-angle-down';
   data.lyricCard = 0;
   data.missingWords = [];
+  data.submittedWords = [];
+  data.totalLyricCards = 0;
   cardSwap('choose');
 }
 
@@ -111,47 +122,89 @@ function putLyrics(lyrics) {
   var lyricsArray = lyrics.split('\n');
   var count = 0;
   var cardCount = 0;
-  for (var i = 0; i < lyricsArray.length; i += 3) {
-    if (lyricsArray[i] === '...') {
-      break;
-    } else if (lyricsArray[i] !== '') {
-      var lyricLi = document.createElement('li');
-      var lyricP1 = document.createElement('p');
-      var lyricP2 = document.createElement('p');
-      var lyricP3 = document.createElement('p');
-      lyricLi.setAttribute('lyric-card', cardCount);
-      lyricLi.setAttribute('class', 'lyrics');
-      lyricLi.append(lyricP1, lyricP2, lyricP3);
-      lyricP1.setAttribute('lyric-line', count);
-      lyricP1.textContent = lyricsArray[count];
-      count++;
-      lyricP2.setAttribute('lyric-line', count);
-      lyricP2.textContent = lyricsArray[count];
-      count++;
-      lyricP3.setAttribute('lyric-line', count);
-      lyricP3.textContent = lyricsArray[count];
-      count++;
-      cardCount++;
-      $divCardLyrics.append(lyricLi);
-    } else {
-      count++;
+  for (var i = 0; i < lyricsArray.length - 4; i += 3) {
+    var indexEmptyLine = lyricsArray.indexOf('');
+    if (indexEmptyLine > -1) {
+      lyricsArray.splice(indexEmptyLine, 1);
     }
+    var lyricLi = document.createElement('li');
+    var lyricP1 = document.createElement('p');
+    var lyricP2 = document.createElement('p');
+    var lyricP3 = document.createElement('p');
+    lyricLi.setAttribute('lyric-card', cardCount);
+    lyricLi.setAttribute('class', 'lyrics');
+    lyricLi.append(lyricP1, lyricP2, lyricP3);
+    lyricP1.setAttribute('lyric-line', count);
+    lyricP1.textContent = lyricsArray[count];
+    count++;
+    lyricP2.setAttribute('lyric-line', count);
+    lyricP2.textContent = lyricsArray[count];
+    count++;
+    lyricP3.setAttribute('lyric-line', count);
+    lyricP3.textContent = lyricsArray[count];
+    count++;
+    cardCount++;
+    data.lyrics.push([lyricsArray[i], lyricsArray[i + 1], lyricsArray[i + 2]]);
+    $divCardLyrics.append(lyricLi);
     data.totalLyricCards++;
   }
   for (var j = 0; j < cardCount; j++) {
     randomizeMissingLyrics(j.toString());
   }
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
 }
 
 function randomizeMissingLyrics(lyricCardNumber) {
   var $cardLyrics = document.querySelectorAll('.lyrics');
   var $p = $cardLyrics[lyricCardNumber].querySelectorAll('p');
   var randomLine = Math.floor(Math.random() * $p.length);
+  data.randomLyricLine.push(randomLine);
   var wordsOfRandomLine = $p[randomLine].textContent.split(' ');
-  var randomIndex = Math.floor(Math.random() * wordsOfRandomLine.length);
+  var randomIndex = Math.floor(Math.random() * (wordsOfRandomLine.length - 1));
   var randomActualWords = '';
-  randomActualWords = wordsOfRandomLine[randomIndex] + ' ' + wordsOfRandomLine[randomIndex + 1];
+  randomActualWords = [wordsOfRandomLine[randomIndex], wordsOfRandomLine[randomIndex + 1]];
+  var splitted = $p[randomLine].textContent.split(randomActualWords[0] + ' ' + randomActualWords[1]);
   data.missingWords.push(randomActualWords);
-  wordsOfRandomLine.splice(randomIndex, 2, '_______');
-  $p[randomLine].textContent = wordsOfRandomLine.join(' ');
+  var $span1 = document.createElement('span');
+  var $span2 = document.createElement('span');
+  $span1.textContent = '___';
+  $span1.className = 'span1';
+  $span2.textContent = '___';
+  $span2.className = 'span2';
+  $p[randomLine].textContent = '';
+  $p[randomLine].append(splitted[0], $span1, $span2, splitted[1]);
+}
+
+function handleSubmit(event) {
+  var $cardLyrics = document.querySelectorAll('.lyrics');
+  var $p = $cardLyrics[data.lyricCard].querySelectorAll('p');
+  var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
+  data.submittedWords.push($lyricsInput.value);
+  var $wordsOfInput = $lyricsInput.value.split(' ');
+
+  for (var i = 0; i < $wordsOfInput.length; i++) {
+    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('');
+    var noCaps = strippedWords.toLowerCase();
+    if ($wordsOfInput[i] === strippedWords || $wordsOfInput[i] === noCaps) {
+      $span[i].className = 'correct';
+      if (i === $wordsOfInput.length - 1) {
+        $span[i].textContent = data.missingWords[data.lyricCard][i];
+      } else {
+        $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      }
+    } else {
+      $span[i].className = 'incorrect';
+      if (i === $wordsOfInput.length - 1) {
+        $span[i].textContent = data.missingWords[data.lyricCard][i];
+      } else {
+        $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      }
+    }
+  }
+
+  $lyricsInput.value = '';
+  data.lyricCard++;
+  $arrowUp.className = 'pos-abs fas fa-angle-up';
+  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+  lyricsSwap(data.lyricCard);
 }

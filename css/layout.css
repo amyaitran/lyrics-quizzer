@@ -20,14 +20,6 @@
   width: 50%;
 }
 
-.column-nine-tenths {
-  width: 90%;
-}
-
-.column-one-tenths {
-  width: 10%;
-}
-
 .center {
   display: flex;
   justify-content: center;
@@ -40,6 +32,10 @@
 
 .margin-top {
   margin-top: 2rem;
+}
+
+.margin-0 {
+  margin: 0 auto;
 }
 
 .pos-rel {
