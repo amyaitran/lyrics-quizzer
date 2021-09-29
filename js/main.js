@@ -12,12 +12,18 @@ var $artistHeading = document.querySelector('#artistHeading');
 var $lyricsInput = document.querySelector('#lyrics-input');
 var $nextBtn = document.querySelector('#next-btn');
 var $cardIndicator = document.querySelector('h5');
+var $inputDiv = document.querySelector('#input-div');
+var $overlay = document.querySelector('.overlay');
+var $modalScore = document.querySelector('#modal-score');
+var $modalFinalScore = document.querySelector('#modal-final-score');
+var $awesomeBtn = document.querySelector('#awesome-btn');
 
 $searchBtn.addEventListener('click', handleSearch);
 $homeIcon.addEventListener('click', handleClickHome);
 $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
 $nextBtn.addEventListener('click', handleSubmit);
+$awesomeBtn.addEventListener('click', handleAwesomeBtn);
 
 function handleSearch(event) {
   event.preventDefault();
@@ -46,6 +52,7 @@ function capitalizeWords(string) {
 }
 
 function handleArrowUp(event) {
+  $inputDiv.className = 'hidden center margin-0';
   $arrowDown.className = 'pos-abs fas fa-angle-down';
   if (data.lyricCard === 1) {
     data.lyricCard--;
@@ -59,15 +66,28 @@ function handleArrowUp(event) {
 
 function handleArrowDown(event) {
   $arrowUp.className = 'pos-abs fas fa-angle-up';
-  if (data.lyricCard === data.totalLyricCards - 2) {
+  if (data.lyricCard === data.submittedCard - 1 || data.lyricCard === data.totalLyricCards - 2) {
     data.lyricCard++;
     $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+    $inputDiv.className = 'center margin-0';
   } else {
     data.lyricCard++;
   }
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
+
+// function handleArrowDown(event) {
+//   $arrowUp.className = 'pos-abs fas fa-angle-up';
+//   if (data.lyricCard === data.totalLyricCards - 2) {
+//     data.lyricCard++;
+//     $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+//   } else {
+//     data.lyricCard++;
+//   }
+//   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+//   lyricsSwap(data.lyricCard);
+// }
 
 function handleClickHome(event) {
   while ($divCardLyrics.firstChild) {
@@ -181,7 +201,6 @@ function handleSubmit(event) {
   var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
   data.submittedWords.push($lyricsInput.value);
   var $wordsOfInput = $lyricsInput.value.split(' ');
-
   for (var i = 0; i < $wordsOfInput.length; i++) {
     var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('');
     var noCaps = strippedWords.toLowerCase();
@@ -201,10 +220,23 @@ function handleSubmit(event) {
       }
     }
   }
-
   $lyricsInput.value = '';
-  data.lyricCard++;
-  $arrowUp.className = 'pos-abs fas fa-angle-up';
+  if (data.lyricCard === data.totalLyricCards - 1) {
+    $overlay.className = 'overlay';
+    $modalFinalScore.className = 'modal';
+  } else {
+    data.lyricCard++;
+    data.submittedCard++;
+    $arrowUp.className = 'pos-abs fas fa-angle-up';
+    $inputDiv.className = 'center margin-0';
+  }
+
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
+}
+
+function handleAwesomeBtn(event) {
+  $modalScore.className = 'modal hidden';
+  $modalFinalScore.className = 'modal hidden';
+  $overlay.className = 'overlay hidden';
 }
