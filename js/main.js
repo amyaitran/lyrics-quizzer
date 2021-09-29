@@ -16,14 +16,27 @@ var $inputDiv = document.querySelector('#input-div');
 var $overlay = document.querySelector('.overlay');
 var $modalScore = document.querySelector('#modal-score');
 var $modalFinalScore = document.querySelector('#modal-final-score');
-var $awesomeBtn = document.querySelector('#awesome-btn');
+var $awesomeBtn = document.querySelectorAll('.awesome-btn');
+var $modalText = document.querySelector('#modal-text');
+
+var $scoreText = document.querySelector('.score-text');
+var $scoreCard = document.querySelector('.card-score');
+var $totalScore = document.querySelector('.total-score');
+var $finalTotalScore = document.querySelector('.final-total-score');
+var $modalSong = document.querySelector('.modal-song');
 
 $searchBtn.addEventListener('click', handleSearch);
 $homeIcon.addEventListener('click', handleClickHome);
 $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
 $nextBtn.addEventListener('click', handleSubmit);
-$awesomeBtn.addEventListener('click', handleAwesomeBtn);
+for (var i of $awesomeBtn) {
+  i.addEventListener('click', handleAwesomeBtn)
+  ;
+}
+
+var song = null;
+var artist = null;
 
 function handleSearch(event) {
   event.preventDefault();
@@ -31,8 +44,10 @@ function handleSearch(event) {
   var $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
   $form.reset();
-  $songHeading.textContent = '"' + capitalizeWords($songValue) + '"';
-  $artistHeading.textContent = 'by ' + capitalizeWords($artistValue);
+  song = '"' + capitalizeWords($songValue) + '"';
+  artist = 'by ' + capitalizeWords($artistValue);
+  $songHeading.textContent = song;
+  $artistHeading.textContent = artist;
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   cardSwap('lyrics');
 }
@@ -77,18 +92,6 @@ function handleArrowDown(event) {
   lyricsSwap(data.lyricCard);
 }
 
-// function handleArrowDown(event) {
-//   $arrowUp.className = 'pos-abs fas fa-angle-up';
-//   if (data.lyricCard === data.totalLyricCards - 2) {
-//     data.lyricCard++;
-//     $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
-//   } else {
-//     data.lyricCard++;
-//   }
-//   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
-//   lyricsSwap(data.lyricCard);
-// }
-
 function handleClickHome(event) {
   while ($divCardLyrics.firstChild) {
     $divCardLyrics.removeChild($divCardLyrics.firstChild);
@@ -96,10 +99,15 @@ function handleClickHome(event) {
   $songHeading.textContent = '';
   $artistHeading.textContent = '';
   $arrowDown.className = 'pos-abs fas fa-angle-down';
+  $inputDiv.className = 'center margin-0';
   data.lyricCard = 0;
+  data.totalLyricCards = 0;
+  data.lyrics = [];
+  data.randomLyricLine = [];
   data.missingWords = [];
   data.submittedWords = [];
-  data.totalLyricCards = 0;
+  data.submittedCard = 0;
+  data.runningScore = 0;
   cardSwap('choose');
 }
 
@@ -206,6 +214,8 @@ function handleSubmit(event) {
     var noCaps = strippedWords.toLowerCase();
     if ($wordsOfInput[i] === strippedWords || $wordsOfInput[i] === noCaps) {
       $span[i].className = 'correct';
+      data.score++;
+      data.runningScore++;
       if (i === $wordsOfInput.length - 1) {
         $span[i].textContent = data.missingWords[data.lyricCard][i];
       } else {
@@ -221,16 +231,32 @@ function handleSubmit(event) {
     }
   }
   $lyricsInput.value = '';
+  $overlay.className = 'overlay';
   if (data.lyricCard === data.totalLyricCards - 1) {
-    $overlay.className = 'overlay';
+    $finalTotalScore.textContent = 'Your final score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
+    $modalSong.innerHTML = song + '<br>' + artist;
     $modalFinalScore.className = 'modal';
+    $inputDiv.className = 'hidden center margin-0';
   } else {
+    $modalScore.className = 'modal';
+    $scoreCard.textContent = 'You scored ' + data.score + '/ 2 points';
+    $totalScore.textContent = 'Total score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
+    if (data.score === 2) {
+      $scoreText.textContent = 'Good job!';
+      $modalText.className = 'green text-align';
+    } else if (data.score === 1) {
+      $scoreText.textContent = 'Nice try!';
+      $modalText.className = 'orange text-align';
+    } else {
+      $scoreText.textContent = 'Oops!';
+      $modalText.className = 'red text-align';
+    }
     data.lyricCard++;
     data.submittedCard++;
     $arrowUp.className = 'pos-abs fas fa-angle-up';
     $inputDiv.className = 'center margin-0';
   }
-
+  data.score = 0;
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
   lyricsSwap(data.lyricCard);
 }
