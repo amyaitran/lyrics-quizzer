@@ -50,6 +50,11 @@
   position: absolute;
 }
 
+#play-again {
+  float: right;
+  margin: 0 3rem;
+}
+
 #arrowUp {
   right: -1.5rem;
   top: 1rem;

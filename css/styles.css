@@ -95,6 +95,10 @@ input {
   color: red;
 }
 
+.red-bg {
+  background-color: red;
+}
+
 .score-text {
   font-weight: 700;
   border: none;
