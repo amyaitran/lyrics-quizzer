@@ -6,6 +6,9 @@ var data = {
   lyrics: [],
   randomLyricLine: [],
   missingWords: [],
-  submittedWords: []
+  submittedWords: [],
+  submittedCard: 0,
+  score: 0,
+  runningScore: 0
 }
 ;
