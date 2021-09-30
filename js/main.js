@@ -269,10 +269,12 @@ function handleAwesomeBtn(event) {
 }
 
 function handlePlayAgain(event) {
-  $arrowDown.className = 'pos-abs fas fa-angle-down';
   $inputDiv.className = 'center margin-0';
   while ($divCardLyrics.firstChild) {
     $divCardLyrics.removeChild($divCardLyrics.firstChild);
+  }
+  while ($modalSong.firstChild) {
+    $modalSong.removeChild($modalSong.firstChild);
   }
   data.lyricCard = 0;
   data.totalLyricCards = 0;
