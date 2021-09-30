@@ -209,9 +209,9 @@ function handleSubmit(event) {
   data.submittedWords.push($lyricsInput.value);
   var $wordsOfInput = $lyricsInput.value.split(' ');
   for (var i = 0; i < $wordsOfInput.length; i++) {
-    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('');
+    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
     var noCaps = strippedWords.toLowerCase();
-    if ($wordsOfInput[i] === strippedWords || $wordsOfInput[i] === noCaps) {
+    if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === noCaps) {
       $span[i].className = 'correct';
       data.score++;
       data.runningScore++;
