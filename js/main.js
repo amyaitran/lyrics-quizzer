@@ -31,8 +31,7 @@ $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
 $nextBtn.addEventListener('click', handleSubmit);
 for (var i of $awesomeBtn) {
-  i.addEventListener('click', handleAwesomeBtn)
-  ;
+  i.addEventListener('click', handleAwesomeBtn);
 }
 
 var song = null;
@@ -234,7 +233,7 @@ function handleSubmit(event) {
   $overlay.className = 'overlay';
   if (data.lyricCard === data.totalLyricCards - 1) {
     $finalTotalScore.textContent = 'Your final score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
-    $modalSong.innerHTML = song + '<br>' + artist;
+    $modalSong.append(song, document.createElement('br'), artist);
     $modalFinalScore.className = 'modal';
     $inputDiv.className = 'hidden center margin-0';
   } else {
