@@ -18,6 +18,7 @@ var $modalScore = document.querySelector('#modal-score');
 var $modalFinalScore = document.querySelector('#modal-final-score');
 var $awesomeBtn = document.querySelectorAll('.awesome-btn');
 var $modalText = document.querySelector('#modal-text');
+var $playAgainBtn = document.querySelector('#play-again');
 
 var $scoreText = document.querySelector('.score-text');
 var $scoreCard = document.querySelector('.card-score');
@@ -30,6 +31,7 @@ $homeIcon.addEventListener('click', handleClickHome);
 $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
 $nextBtn.addEventListener('click', handleSubmit);
+$playAgainBtn.addEventListener('click', handlePlayAgain);
 for (var i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
 }
@@ -139,6 +141,7 @@ function getLyrics(song, artist) {
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     var $lyrics = xhr.response.message.body.lyrics.lyrics_body;
+    data.lyrics = $lyrics;
     putLyrics($lyrics);
     lyricsSwap(data.lyricCard);
   });
@@ -171,14 +174,13 @@ function putLyrics(lyrics) {
     lyricP3.textContent = lyricsArray[count];
     count++;
     cardCount++;
-    data.lyrics.push([lyricsArray[i], lyricsArray[i + 1], lyricsArray[i + 2]]);
     $divCardLyrics.append(lyricLi);
     data.totalLyricCards++;
   }
   for (var j = 0; j < cardCount; j++) {
     randomizeMissingLyrics(j.toString());
   }
-  $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+  $cardIndicator.textContent = '1/' + data.totalLyricCards;
 }
 
 function randomizeMissingLyrics(lyricCardNumber) {
@@ -264,4 +266,23 @@ function handleAwesomeBtn(event) {
   $modalScore.className = 'modal hidden';
   $modalFinalScore.className = 'modal hidden';
   $overlay.className = 'overlay hidden';
+}
+
+function handlePlayAgain(event) {
+  $inputDiv.className = 'center margin-0';
+  while ($divCardLyrics.firstChild) {
+    $divCardLyrics.removeChild($divCardLyrics.firstChild);
+  }
+  while ($modalSong.firstChild) {
+    $modalSong.removeChild($modalSong.firstChild);
+  }
+  data.lyricCard = 0;
+  data.totalLyricCards = 0;
+  data.randomLyricLine = [];
+  data.missingWords = [];
+  data.submittedWords = [];
+  data.submittedCard = 0;
+  data.runningScore = 0;
+  putLyrics(data.lyrics);
+  lyricsSwap(data.lyricCard);
 }
