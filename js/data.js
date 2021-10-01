@@ -2,6 +2,7 @@
 
 var data = {
   playlistID: 0,
+  playlist: [],
   lyricCard: 0,
   totalLyricCards: 0,
   randomLyricLine: [],

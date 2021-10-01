@@ -42,7 +42,7 @@
         <h1>Lyrics App</h1>
       </div>
       <div class="column-half center">
-        <i id="home" class="fas fa-home"></i>
+        <a href="#"><i id="home" class="fas fa-home"></i></a>
       </div>
     </div>
   </header>
@@ -51,7 +51,7 @@
       <div class="row">
         <div class="column-full">
           <div class="card" data-view="choose">
-            <h2 class="center">Choose a song!</h2>
+            <h2 class="margin-0 center">Choose a song!</h2>
             <form id="input-song">
               <div class="row center">
                 <label for="title">
@@ -73,13 +73,13 @@
           </div>
 
           <div class="card" data-view="choose">
-            <h2 class="center">Current Playlist</h2>
-            <p class="center hidden">No songs selected.</p>
+            <h2 class="margin-0 center">Current Playlist</h2>
+            <p id="empty-playlist" class="center">Empty! No songs selected.</p>
             <ul>
               <!-- <li>
                 <div class="row">
                   <div class="column-a center">
-                    <i id="delete" class="fas fa-times red"></i>
+                    <a href="#"><i class="fas fa-times delete"></i>
                   </div>
                   <div class="column-b">
                     <p>"Say You Will" <br> by Fleetwood Mac</p>

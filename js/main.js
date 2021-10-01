@@ -19,13 +19,13 @@ var $modalFinalScore = document.querySelector('#modal-final-score');
 var $awesomeBtn = document.querySelectorAll('.awesome-btn');
 var $modalText = document.querySelector('#modal-text');
 var $playAgainBtn = document.querySelector('#play-again');
-// var $playlistBtn = document.querySelector('#playlist-btn');
 var $ul = document.querySelector('ul');
 var $scoreText = document.querySelector('.score-text');
 var $scoreCard = document.querySelector('.card-score');
 var $totalScore = document.querySelector('.total-score');
 var $finalTotalScore = document.querySelector('.final-total-score');
 var $modalSong = document.querySelector('.modal-song');
+var $emptyPlaylistText = document.querySelector('#empty-playlist');
 
 $form.addEventListener('submit', handlePlaylist);
 $playBtn.addEventListener('click', handlePlay);
@@ -34,7 +34,8 @@ $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
 $nextBtn.addEventListener('click', handleSubmitLyrics);
 $playAgainBtn.addEventListener('click', handlePlayAgain);
-// $playlistBtn.addEventListener('click', handlePlaylist);
+$ul.addEventListener('click', handleDelete);
+$ul.addEventListener('click', handlePlayFromPlaylist);
 for (var i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
 }
@@ -99,6 +100,7 @@ function handleClickHome(event) {
   while ($divCardLyrics.firstChild) {
     $divCardLyrics.removeChild($divCardLyrics.firstChild);
   }
+  $form.reset();
   $songHeading.textContent = '';
   $artistHeading.textContent = '';
   $arrowDown.className = 'pos-abs fas fa-angle-down';
@@ -289,11 +291,19 @@ function handlePlayAgain(event) {
   lyricsSwap(data.lyricCard);
 }
 
+function handlePlaylist(event) {
+  event.preventDefault();
+  data.playlist.push({ id: data.playlistID, song: event.target.song.value, artist: event.target.artist.value });
+  $emptyPlaylistText.className = 'hidden center';
+  $ul.append(renderPlaylist(event.target.song.value, event.target.artist.value));
+  $form.reset();
+}
+
 //              <ul>
 //               <li>
 //                 <div class="row">
 //                   <div class="column-a center">
-//                     <i id="delete" class="fas fa-times red"></i>
+//                     <a href="#"><i class="fas fa-times delete"></i></a>
 //                   </div>
 //                   <div class="column-b">
 //                     <p>"Say You Will" <br> by Fleetwood Mac</p>
@@ -305,28 +315,24 @@ function handlePlayAgain(event) {
 //               </li>
 //             </ul>
 
-function handlePlaylist(event) {
-  event.preventDefault();
-  $ul.append(renderPlaylist(event.target.song.value, event.target.artist.value));
-  $form.reset();
-}
-
 function renderPlaylist(song, artist) {
   var li = document.createElement('li');
   var row = document.createElement('div');
   var columnA = document.createElement('div');
   var columnB = document.createElement('div');
   var columnC = document.createElement('div');
+  var a = document.createElement('a');
   var deleteIcon = document.createElement('i');
   var p = document.createElement('p');
   var br = document.createElement('br');
   var button = document.createElement('button');
 
-  li.setAttribute('id', data.playlistID);
+  li.setAttribute('data-playlist-id', data.playlistID);
   row.setAttribute('class', 'row');
   columnA.setAttribute('class', 'column-a center');
   columnB.setAttribute('class', 'column-b padding-top');
   columnC.setAttribute('class', 'column-c center');
+  a.setAttribute('href', '#');
   deleteIcon.setAttribute('class', 'fas fa-times delete');
   columnB.append('"', capitalizeWords(song), '"', br, 'by ', capitalizeWords(artist));
   button.setAttribute('class', 'red-bg');
@@ -334,8 +340,43 @@ function renderPlaylist(song, artist) {
 
   li.append(row);
   row.append(columnA, columnB, columnC);
-  columnA.append(deleteIcon);
+  a.append(deleteIcon);
+  columnA.append(a);
   columnB.append(p);
   columnC.append(button);
+  data.playlistID++;
   return li;
+}
+
+function handleDelete(event) {
+  var $li = document.querySelectorAll('li');
+  if (event.target.className === 'fas fa-times delete') {
+    var listID = event.target.closest('li').getAttribute('data-playlist-id');
+    for (var i = 0; i < $li.length; i++) {
+      if ($li[i].getAttribute('data-playlist-id') === listID) {
+        $li[i].remove();
+        data.playlist.splice(listID, 1);
+      }
+    }
+  }
+  if (data.playlist.length === 0) {
+    $emptyPlaylistText.className = 'center';
+  }
+}
+
+function handlePlayFromPlaylist(event) {
+  if (event.target.className === 'red-bg') {
+    var listID = event.target.closest('li').getAttribute('data-playlist-id');
+    for (var i = 0; i < data.playlist.length; i++) {
+      if (data.playlist[i].id === parseInt(listID)) {
+        getLyrics(data.playlist[i].song, data.playlist[i].artist);
+      }
+    }
+    song = '"' + capitalizeWords(data.playlist[i].song) + '"';
+    artist = 'by ' + capitalizeWords(data.playlist[i].artist);
+    $songHeading.textContent = song;
+    $artistHeading.textContent = artist;
+    $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+    cardSwap('lyrics');
+  }
 }
