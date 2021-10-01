@@ -26,6 +26,8 @@ var $totalScore = document.querySelector('.total-score');
 var $finalTotalScore = document.querySelector('.final-total-score');
 var $modalSong = document.querySelector('.modal-song');
 var $emptyPlaylistText = document.querySelector('#empty-playlist');
+var $playNextBtn = document.querySelector('#play-next');
+var $playRandomBtn = document.querySelector('#play-random');
 
 $form.addEventListener('submit', handlePlaylist);
 $playBtn.addEventListener('click', handlePlay);
@@ -36,23 +38,68 @@ $nextBtn.addEventListener('click', handleSubmitLyrics);
 $playAgainBtn.addEventListener('click', handlePlayAgain);
 $ul.addEventListener('click', handleDelete);
 $ul.addEventListener('click', handlePlayFromPlaylist);
+$playNextBtn.addEventListener('click', handlePlayNext);
+$playRandomBtn.addEventListener('click', handlePlayRandom);
 for (var i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
 }
 
-var song = null;
-var artist = null;
+function handlePlayNext(event) {
+  data.playlistIndexOfCurrentSong++;
+  clearData();
+  getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
+  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  $songHeading.textContent = data.song;
+  $artistHeading.textContent = data.artist;
+  $inputDiv.className = 'center margin-0';
+  $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+  lyricsSwap(data.lyricCard);
+}
+
+function clearData() {
+  while ($divCardLyrics.firstChild) {
+    $divCardLyrics.removeChild($divCardLyrics.firstChild);
+  }
+  while ($modalSong.firstChild) {
+    $modalSong.removeChild($modalSong.firstChild);
+  }
+  data.lyrics = null;
+  data.lyricCard = 0;
+  data.totalLyricCards = 0;
+  data.randomLyricLine = [];
+  data.missingWords = [];
+  data.submittedWords = [];
+  data.submittedCard = 0;
+  data.runningScore = 0;
+}
+
+function handlePlayRandom(event) {
+  data.playlistIndexOfCurrentSong = Math.floor(Math.random() * data.playlist.length);
+  clearData();
+  getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
+  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  $songHeading.textContent = data.song;
+  $artistHeading.textContent = data.artist;
+  $inputDiv.className = 'center margin-0';
+  $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+  lyricsSwap(data.lyricCard);
+}
 
 function handlePlay(event) {
   event.preventDefault();
   var $songValue = $song.value;
   var $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
-  song = '"' + capitalizeWords($songValue) + '"';
-  artist = 'by ' + capitalizeWords($artistValue);
-  $songHeading.textContent = song;
-  $artistHeading.textContent = artist;
+  data.song = '"' + capitalizeWords($songValue) + '"';
+  data.artist = 'by ' + capitalizeWords($artistValue);
+  $songHeading.textContent = data.song;
+  $artistHeading.textContent = data.artist;
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+  data.playingFromPlaylist = false;
+  $playNextBtn.className = 'red-bg hidden';
+  $playRandomBtn.className = 'red-bg hidden';
   cardSwap('lyrics');
 }
 
@@ -97,22 +144,12 @@ function handleArrowDown(event) {
 }
 
 function handleClickHome(event) {
-  while ($divCardLyrics.firstChild) {
-    $divCardLyrics.removeChild($divCardLyrics.firstChild);
-  }
+  clearData();
   $form.reset();
   $songHeading.textContent = '';
   $artistHeading.textContent = '';
   $arrowDown.className = 'pos-abs fas fa-angle-down';
   $inputDiv.className = 'center margin-0';
-  data.lyricCard = 0;
-  data.totalLyricCards = 0;
-  data.lyrics = [];
-  data.randomLyricLine = [];
-  data.missingWords = [];
-  data.submittedWords = [];
-  data.submittedCard = 0;
-  data.runningScore = 0;
   cardSwap('choose');
 }
 
@@ -214,21 +251,29 @@ function handleSubmitLyrics(event) {
   var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
   data.submittedWords.push($lyricsInput.value);
   var $wordsOfInput = $lyricsInput.value.split(' ');
-  for (var i = 0; i < $wordsOfInput.length; i++) {
+  var numberOfMissingWords = 2;
+  for (var i = 0; i < numberOfMissingWords; i++) {
     var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
     var noCaps = strippedWords.toLowerCase();
-    if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === noCaps) {
+    if (!$wordsOfInput[i]) {
+      $span[i].className = 'incorrect italic';
+      if (i === numberOfMissingWords - 1) {
+        $span[i].textContent = data.missingWords[data.lyricCard][i];
+      } else {
+        $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
+      }
+    } else if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === noCaps) {
       $span[i].className = 'correct';
       data.score++;
       data.runningScore++;
-      if (i === $wordsOfInput.length - 1) {
+      if (i === numberOfMissingWords - 1) {
         $span[i].textContent = data.missingWords[data.lyricCard][i];
       } else {
         $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
       }
     } else {
       $span[i].className = 'incorrect';
-      if (i === $wordsOfInput.length - 1) {
+      if (i === numberOfMissingWords - 1) {
         $span[i].textContent = data.missingWords[data.lyricCard][i];
       } else {
         $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
@@ -239,7 +284,7 @@ function handleSubmitLyrics(event) {
   $overlay.className = 'overlay';
   if (data.lyricCard === data.totalLyricCards - 1) {
     $finalTotalScore.textContent = 'Your final score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
-    $modalSong.append(song, document.createElement('br'), artist);
+    $modalSong.append(data.song, document.createElement('br'), data.artist);
     $modalFinalScore.className = 'modal';
     $inputDiv.className = 'hidden center margin-0';
   } else {
@@ -299,22 +344,6 @@ function handlePlaylist(event) {
   $form.reset();
 }
 
-//              <ul>
-//               <li>
-//                 <div class="row">
-//                   <div class="column-a center">
-//                     <a href="#"><i class="fas fa-times delete"></i></a>
-//                   </div>
-//                   <div class="column-b">
-//                     <p>"Say You Will" <br> by Fleetwood Mac</p>
-//                   </div>
-//                   <div class="column-c center">
-//                     <button id="playlistPlay-btn" class="red-bg" type="submit">Play</button>
-//                   </div>
-//                 </div>
-//               </li>
-//             </ul>
-
 function renderPlaylist(song, artist) {
   var li = document.createElement('li');
   var row = document.createElement('div');
@@ -369,14 +398,20 @@ function handlePlayFromPlaylist(event) {
     var listID = event.target.closest('li').getAttribute('data-playlist-id');
     for (var i = 0; i < data.playlist.length; i++) {
       if (data.playlist[i].id === parseInt(listID)) {
+        data.playlistIndexOfCurrentSong = data.playlist.indexOf(data.playlist[i]);
         getLyrics(data.playlist[i].song, data.playlist[i].artist);
+        data.song = '"' + capitalizeWords(data.playlist[i].song) + '"';
+        data.artist = 'by ' + capitalizeWords(data.playlist[i].artist);
       }
     }
-    song = '"' + capitalizeWords(data.playlist[i].song) + '"';
-    artist = 'by ' + capitalizeWords(data.playlist[i].artist);
-    $songHeading.textContent = song;
-    $artistHeading.textContent = artist;
+    $inputDiv.className = 'center margin-0';
+    $songHeading.textContent = data.song;
+    $artistHeading.textContent = data.artist;
+    $playNextBtn.className = 'red-bg';
+    $playRandomBtn.className = 'red-bg';
+    $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
     $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
+    data.playingFromPlaylist = true;
     cardSwap('lyrics');
   }
 }

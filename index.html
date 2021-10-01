@@ -71,29 +71,11 @@
               </div>
             </form>
           </div>
-
           <div class="card" data-view="choose">
             <h2 class="margin-0 center">Current Playlist</h2>
             <p id="empty-playlist" class="center">Empty! No songs selected.</p>
-            <ul>
-              <!-- <li>
-                <div class="row">
-                  <div class="column-a center">
-                    <a href="#"><i class="fas fa-times delete"></i>
-                  </div>
-                  <div class="column-b">
-                    <p>"Say You Will" <br> by Fleetwood Mac</p>
-                  </div>
-                  <div class="column-c center">
-                    <button id="playlistPlay-btn" class="red-bg" type="submit">Play</button>
-                  </div>
-                </div>
-              </li> -->
-            </ul>
-
-
+            <ul></ul>
           </div>
-
           <div class="row" data-view="lyrics">
             <div class="column-full margin-top">
               <h3 id="songHeading" class="center"></h3>
@@ -118,17 +100,13 @@
                 </div>
               </div>
 
-              <div class="row jc-r">
-                <!-- <div class="ta-right"> -->
-                  <button id="play-again" class="red-bg" data-view="lyrics">Play again</button>
-                <!-- </div> -->
+              <div class="row jc-se">
+                <button id="play-again" class="red-bg" data-view="lyrics">Play again</button>
+                <button id="play-next" class="red-bg" data-view="lyrics">Play next song</button>
+                <button id="play-random" class="red-bg" data-view="lyrics">Play random song</button>
               </div>
-
             </div>
           </div>
-          <!-- <div class="ta-right">
-            <button id="play-again" class="hidden red-bg" data-view="lyrics">Play again</button>
-          </div> -->
         </div>
       </div>
     </div>

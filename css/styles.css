@@ -38,10 +38,6 @@ li {
   padding: 0;
 }
 
-/* li {
-  list-style-type: none;
-} */
-
 input {
   margin: 0.5rem;
   padding: 0.3rem;
@@ -108,6 +104,10 @@ input {
 .score-text {
   font-weight: 700;
   border: none;
+}
+
+.italic {
+  font-style: italic;
 }
 
 #lyrics {
