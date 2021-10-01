@@ -32,12 +32,6 @@ button {
   cursor: pointer;
 }
 
-ul,
-li {
-  list-style-type: none;
-  padding: 0;
-}
-
 input {
   margin: 0.5rem;
   padding: 0.3rem;

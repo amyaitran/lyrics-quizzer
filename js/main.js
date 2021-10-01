@@ -100,6 +100,7 @@ function handlePlay(event) {
   data.playingFromPlaylist = false;
   $playNextBtn.className = 'red-bg hidden';
   $playRandomBtn.className = 'red-bg hidden';
+  $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
   cardSwap('lyrics');
 }
 
@@ -319,6 +320,7 @@ function handleAwesomeBtn(event) {
 
 function handlePlayAgain(event) {
   $inputDiv.className = 'center margin-0';
+  $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
   while ($divCardLyrics.firstChild) {
     $divCardLyrics.removeChild($divCardLyrics.firstChild);
   }
@@ -358,9 +360,9 @@ function renderPlaylist(song, artist) {
 
   li.setAttribute('data-playlist-id', data.playlistID);
   row.setAttribute('class', 'row');
-  columnA.setAttribute('class', 'column-a center');
-  columnB.setAttribute('class', 'column-b padding-top');
-  columnC.setAttribute('class', 'column-c center');
+  columnA.setAttribute('class', 'column-one-tenths center');
+  columnB.setAttribute('class', 'column-seven-tenths padding-top');
+  columnC.setAttribute('class', 'column-two-tenths center');
   a.setAttribute('href', '#');
   deleteIcon.setAttribute('class', 'fas fa-times delete');
   columnB.append('"', capitalizeWords(song), '"', br, 'by ', capitalizeWords(artist));

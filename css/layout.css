@@ -20,15 +20,15 @@
   width: 50%;
 }
 
-.column-a {
+.column-one-tenths {
   width: 10%;
 }
 
-.column-b {
+.column-seven-tenths {
   width: 70%;
 }
 
-.column-c {
+.column-two-tenths {
   width: 20%;
 }
 
@@ -66,12 +66,8 @@
   position: absolute;
 }
 
-.jc-se {
+.jc-evenly {
   justify-content: space-evenly;
-}
-
-.jc-r {
-  justify-content: right;
 }
 
 #arrowUp {
