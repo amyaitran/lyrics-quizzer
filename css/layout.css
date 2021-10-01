@@ -20,6 +20,18 @@
   width: 50%;
 }
 
+.column-one-tenths {
+  width: 10%;
+}
+
+.column-seven-tenths {
+  width: 70%;
+}
+
+.column-two-tenths {
+  width: 20%;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -28,6 +40,10 @@
 
 .text-align {
   text-align: center;
+}
+
+.padding-top {
+  padding-top: 0.8rem;
 }
 
 .mb-1 {
@@ -50,12 +66,8 @@
   position: absolute;
 }
 
-.ta-right {
-  text-align: right;
-}
-
-#play-again {
-  margin: 0 3rem;
+.jc-evenly {
+  justify-content: space-evenly;
 }
 
 #arrowUp {

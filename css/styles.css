@@ -32,10 +32,6 @@ button {
   cursor: pointer;
 }
 
-li {
-  list-style-type: none;
-}
-
 input {
   margin: 0.5rem;
   padding: 0.3rem;
@@ -51,7 +47,7 @@ input {
 .card {
   background-color: white;
   width: 500px;
-  border-radius: 5rem;
+  border-radius: 3rem;
   padding: 1rem;
   margin: 1rem auto;
   box-shadow: 2px 5px 5px 0 rgba(0, 0, 0, 1);
@@ -104,6 +100,10 @@ input {
   border: none;
 }
 
+.italic {
+  font-style: italic;
+}
+
 #lyrics {
   padding: 0 4rem 2rem 3rem;
 }
@@ -111,7 +111,6 @@ input {
 #home {
   color: white;
   font-size: 2rem;
-  cursor: pointer;
 }
 
 #arrowUp,
@@ -124,4 +123,9 @@ input {
   padding: 0.5rem;
   background-color: rgba(87, 204, 153, 0.12);
   border: 1px solid black;
+}
+
+.delete {
+  font-size: 1.3rem;
+  color: red;
 }
