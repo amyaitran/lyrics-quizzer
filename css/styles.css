@@ -32,9 +32,15 @@ button {
   cursor: pointer;
 }
 
+ul,
 li {
   list-style-type: none;
+  padding: 0;
 }
+
+/* li {
+  list-style-type: none;
+} */
 
 input {
   margin: 0.5rem;
@@ -124,4 +130,9 @@ input {
   padding: 0.5rem;
   background-color: rgba(87, 204, 153, 0.12);
   border: 1px solid black;
+}
+
+.delete {
+  font-size: 1.3rem;
+  color: red;
 }

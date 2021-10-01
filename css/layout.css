@@ -20,6 +20,18 @@
   width: 50%;
 }
 
+.column-a {
+  width: 10%;
+}
+
+.column-b {
+  width: 70%;
+}
+
+.column-c {
+  width: 20%;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -28,6 +40,10 @@
 
 .text-align {
   text-align: center;
+}
+
+.padding-top {
+  padding-top: 0.8rem;
 }
 
 .mb-1 {
@@ -50,9 +66,17 @@
   position: absolute;
 }
 
-.ta-right {
-  text-align: right;
+.jc-se {
+  justify-content: space-evenly;
 }
+
+.jc-r {
+  justify-content: right;
+}
+
+/* .ta-right {
+  text-align: right;
+} */
 
 #play-again {
   margin: 0 3rem;

@@ -1,7 +1,7 @@
-var $form = document.querySelector('#input-form');
+var $form = document.querySelector('#input-song');
 var $song = document.querySelector('#song');
 var $artist = document.querySelector('#artist');
-var $searchBtn = document.querySelector('#search-btn');
+var $playBtn = document.querySelector('#play-btn');
 var $cards = document.querySelectorAll('.card');
 var $homeIcon = document.querySelector('i');
 var $divCardLyrics = document.querySelector('#card-lyrics');
@@ -19,19 +19,22 @@ var $modalFinalScore = document.querySelector('#modal-final-score');
 var $awesomeBtn = document.querySelectorAll('.awesome-btn');
 var $modalText = document.querySelector('#modal-text');
 var $playAgainBtn = document.querySelector('#play-again');
-
+// var $playlistBtn = document.querySelector('#playlist-btn');
+var $ul = document.querySelector('ul');
 var $scoreText = document.querySelector('.score-text');
 var $scoreCard = document.querySelector('.card-score');
 var $totalScore = document.querySelector('.total-score');
 var $finalTotalScore = document.querySelector('.final-total-score');
 var $modalSong = document.querySelector('.modal-song');
 
-$searchBtn.addEventListener('click', handleSearch);
+$form.addEventListener('submit', handlePlaylist);
+$playBtn.addEventListener('click', handlePlay);
 $homeIcon.addEventListener('click', handleClickHome);
 $arrowUp.addEventListener('click', handleArrowUp);
 $arrowDown.addEventListener('click', handleArrowDown);
-$nextBtn.addEventListener('click', handleSubmit);
+$nextBtn.addEventListener('click', handleSubmitLyrics);
 $playAgainBtn.addEventListener('click', handlePlayAgain);
+// $playlistBtn.addEventListener('click', handlePlaylist);
 for (var i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
 }
@@ -39,12 +42,11 @@ for (var i of $awesomeBtn) {
 var song = null;
 var artist = null;
 
-function handleSearch(event) {
+function handlePlay(event) {
   event.preventDefault();
   var $songValue = $song.value;
   var $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
-  $form.reset();
   song = '"' + capitalizeWords($songValue) + '"';
   artist = 'by ' + capitalizeWords($artistValue);
   $songHeading.textContent = song;
@@ -204,7 +206,7 @@ function randomizeMissingLyrics(lyricCardNumber) {
   $p[randomLine].append(splitted[0], $span1, $span2, splitted[1]);
 }
 
-function handleSubmit(event) {
+function handleSubmitLyrics(event) {
   var $cardLyrics = document.querySelectorAll('.lyrics');
   var $p = $cardLyrics[data.lyricCard].querySelectorAll('p');
   var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
@@ -285,4 +287,55 @@ function handlePlayAgain(event) {
   data.runningScore = 0;
   putLyrics(data.lyrics);
   lyricsSwap(data.lyricCard);
+}
+
+//              <ul>
+//               <li>
+//                 <div class="row">
+//                   <div class="column-a center">
+//                     <i id="delete" class="fas fa-times red"></i>
+//                   </div>
+//                   <div class="column-b">
+//                     <p>"Say You Will" <br> by Fleetwood Mac</p>
+//                   </div>
+//                   <div class="column-c center">
+//                     <button id="playlistPlay-btn" class="red-bg" type="submit">Play</button>
+//                   </div>
+//                 </div>
+//               </li>
+//             </ul>
+
+function handlePlaylist(event) {
+  event.preventDefault();
+  $ul.append(renderPlaylist(event.target.song.value, event.target.artist.value));
+  $form.reset();
+}
+
+function renderPlaylist(song, artist) {
+  var li = document.createElement('li');
+  var row = document.createElement('div');
+  var columnA = document.createElement('div');
+  var columnB = document.createElement('div');
+  var columnC = document.createElement('div');
+  var deleteIcon = document.createElement('i');
+  var p = document.createElement('p');
+  var br = document.createElement('br');
+  var button = document.createElement('button');
+
+  li.setAttribute('id', data.playlistID);
+  row.setAttribute('class', 'row');
+  columnA.setAttribute('class', 'column-a center');
+  columnB.setAttribute('class', 'column-b padding-top');
+  columnC.setAttribute('class', 'column-c center');
+  deleteIcon.setAttribute('class', 'fas fa-times delete');
+  columnB.append('"', capitalizeWords(song), '"', br, 'by ', capitalizeWords(artist));
+  button.setAttribute('class', 'red-bg');
+  button.textContent = 'Play';
+
+  li.append(row);
+  row.append(columnA, columnB, columnC);
+  columnA.append(deleteIcon);
+  columnB.append(p);
+  columnC.append(button);
+  return li;
 }

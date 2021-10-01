@@ -1,6 +1,7 @@
 /* exported data */
 
 var data = {
+  playlistID: 0,
   lyricCard: 0,
   totalLyricCards: 0,
   randomLyricLine: [],

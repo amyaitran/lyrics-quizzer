@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
 </head>
 <body>
   <div class="overlay hidden">
@@ -51,7 +52,7 @@
         <div class="column-full">
           <div class="card" data-view="choose">
             <h2 class="center">Choose a song!</h2>
-            <form id="input-form">
+            <form id="input-song">
               <div class="row center">
                 <label for="title">
                   <h4>Song Title:</h4>
@@ -64,11 +65,35 @@
                 </label>
                 <input required name="artist" id="artist" type="text">
               </div>
-              <div class="row center">
-                <button id="search-btn" type="submit">Search</button>
+              <div class="row center jc-se">
+                <button id="playlist-btn" type="submit">Add to Playlist</button>
+                <button id="play-btn" class="red-bg" >Play</button>
               </div>
             </form>
           </div>
+
+          <div class="card" data-view="choose">
+            <h2 class="center">Current Playlist</h2>
+            <p class="center hidden">No songs selected.</p>
+            <ul>
+              <!-- <li>
+                <div class="row">
+                  <div class="column-a center">
+                    <i id="delete" class="fas fa-times red"></i>
+                  </div>
+                  <div class="column-b">
+                    <p>"Say You Will" <br> by Fleetwood Mac</p>
+                  </div>
+                  <div class="column-c center">
+                    <button id="playlistPlay-btn" class="red-bg" type="submit">Play</button>
+                  </div>
+                </div>
+              </li> -->
+            </ul>
+
+
+          </div>
+
           <div class="row" data-view="lyrics">
             <div class="column-full margin-top">
               <h3 id="songHeading" class="center"></h3>
@@ -92,11 +117,18 @@
                   <button id="next-btn" type="submit">Next</button>
                 </div>
               </div>
+
+              <div class="row jc-r">
+                <!-- <div class="ta-right"> -->
+                  <button id="play-again" class="red-bg" data-view="lyrics">Play again</button>
+                <!-- </div> -->
+              </div>
+
             </div>
           </div>
-          <div class="ta-right">
-            <button id="play-again" class="red-bg">Play again</button>
-          </div>
+          <!-- <div class="ta-right">
+            <button id="play-again" class="hidden red-bg" data-view="lyrics">Play again</button>
+          </div> -->
         </div>
       </div>
     </div>
