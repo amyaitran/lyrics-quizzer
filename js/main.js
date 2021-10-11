@@ -48,8 +48,8 @@ function handlePlayNext(event) {
   data.playlistIndexOfCurrentSong++;
   clearData();
   getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
-  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
-  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = `"${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song)}"`;
+  data.artist = `by ${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
@@ -78,8 +78,8 @@ function handlePlayRandom(event) {
   data.playlistIndexOfCurrentSong = Math.floor(Math.random() * data.playlist.length);
   clearData();
   getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
-  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
-  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = `"${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song)}"`;
+  data.artist = `by ${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
@@ -92,8 +92,8 @@ function handlePlay(event) {
   var $songValue = $song.value;
   var $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
-  data.song = '"' + capitalizeWords($songValue) + '"';
-  data.artist = 'by ' + capitalizeWords($artistValue);
+  data.song = `"${capitalizeWords($songValue)}"`;
+  data.artist = `by ${capitalizeWords($artistValue)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
@@ -254,8 +254,8 @@ function handleSubmitLyrics(event) {
   var $wordsOfInput = $lyricsInput.value.split(' ');
   var numberOfMissingWords = 2;
   for (var i = 0; i < numberOfMissingWords; i++) {
-    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
-    var noCaps = strippedWords.toLowerCase();
+    var strippedWords = data.missingWords[data.lyricCard][i].toLowerCase().split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
+    // var noCaps = strippedWords.toLowerCase();
     if (!$wordsOfInput[i]) {
       $span[i].className = 'incorrect italic';
       if (i === numberOfMissingWords - 1) {
@@ -263,7 +263,7 @@ function handleSubmitLyrics(event) {
       } else {
         $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
       }
-    } else if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === noCaps) {
+    } else if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === data.missingWords[data.lyricCard][i].toLowerCase()) {
       $span[i].className = 'correct';
       data.score++;
       data.runningScore++;

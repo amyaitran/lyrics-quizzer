@@ -9,8 +9,8 @@
   <title>AJAX Project</title>
   <link rel="icon" href="images/favicon.ico">
   <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
 </head>
 <body>
@@ -93,9 +93,9 @@
                 </div>
                 <i id="arrowUp" class="hidden pos-abs fas fa-angle-up"></i>
                 <i id="arrowDown" class="hidden pos-abs fas fa-angle-down"></i>
-                <h5 class="center"></h5>
+                <h5 id="indicator" class="pos-abs"></h5>
                 <div id="input-div" class="center margin-0">
-                  <input required name="lyrics" id="lyrics-input" type="text" placeholder="Type in the lyrics...">
+                  <input required name="lyrics" id="lyrics-input" class="margin-0" type="text" placeholder="Type in the lyrics...">
                   <button id="next-btn" type="submit">Next</button>
                 </div>
               </div>
