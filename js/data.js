@@ -1,6 +1,6 @@
 /* exported data */
 
-var data = {
+let data = {
   playlistID: 0,
   playlist: [],
   playlistIndexOfCurrentSong: null,
@@ -15,6 +15,6 @@ var data = {
   submittedWords: [],
   submittedCard: 0,
   score: 0,
-  runningScore: 0
-}
-;
+  runningScore: 0,
+  completed: false
+};
