@@ -43,9 +43,20 @@ $ul.addEventListener('click', handlePlayFromPlaylist);
 $playNextBtn.addEventListener('click', handlePlayNext);
 $playRandomBtn.addEventListener('click', handlePlayRandom);
 window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('DOMContentLoaded', contentLoaded);
 
 for (const i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
+}
+
+function contentLoaded(event) {
+  if (data.playlist.length !== 0) {
+    $emptyPlaylistText.className = 'hidden center';
+  }
+  for (let i = 0; i < data.playlist.length; i++) {
+    data.playlist[i].id = i;
+    $ul.appendChild(renderPlaylist(data.playlist[i].song, data.playlist[i].artist));
+  }
 }
 
 function handleKeyDown(event) {
@@ -63,7 +74,11 @@ function handleKeyDown(event) {
 }
 
 function handlePlayNext(event) {
-  data.playlistIndexOfCurrentSong++;
+  if (data.playlistIndexOfCurrentSong !== data.playlist.length - 1) {
+    data.playlistIndexOfCurrentSong++;
+  } else {
+    data.playlistIndexOfCurrentSong = 0;
+  }
   clearData();
   getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
   data.song = `"${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song)}"`;
@@ -203,9 +218,8 @@ function getLyrics(song, artist) {
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + sanitizedURL);
   xhr.responseType = 'json';
   if (!xhr.response) {
-    $lyricsHeader.textContent = 'Error: Song not found';
+    $lyricsHeader.textContent = 'Finding song...';
   }
-
   xhr.addEventListener('load', function () {
     const $lyrics = xhr.response.message.body.lyrics.lyrics_body;
     $lyricsHeader.textContent = 'Fill in the lyrics!';

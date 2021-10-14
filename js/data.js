@@ -18,3 +18,13 @@ let data = {
   runningScore: 0,
   completed: false
 };
+
+const previousPlaylist = localStorage.getItem('javascript-local-storage');
+if (previousPlaylist !== null) {
+  data.playlist = JSON.parse(previousPlaylist);
+}
+
+window.addEventListener('beforeunload', beforeUnload);
+function beforeUnload(event) {
+  localStorage.setItem('javascript-local-storage', JSON.stringify(data.playlist));
+}
