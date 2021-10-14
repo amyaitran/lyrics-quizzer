@@ -294,7 +294,7 @@ function handleSubmitLyrics(event) {
   const $wordsOfInput = $lyricsInput.value.split(' ');
   const numberOfMissingWords = 2;
   for (let i = 0; i < numberOfMissingWords; i++) {
-    const strippedWords = data.missingWords[data.lyricCard][i].toLowerCase().split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
+    const strippedWords = data.missingWords[data.lyricCard][i].toLowerCase().replace(/[?!,."'\\()]/, '');
     if (!$wordsOfInput[i]) {
       $span[i].className = 'incorrect italic';
       if (i === numberOfMissingWords - 1) {
