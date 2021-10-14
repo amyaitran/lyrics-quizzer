@@ -74,6 +74,10 @@
   justify-content: space-evenly;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 #arrowUp {
   right: -1.5rem;
   top: 1rem;

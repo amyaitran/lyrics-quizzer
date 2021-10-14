@@ -29,6 +29,7 @@ const $emptyPlaylistText = document.querySelector('#empty-playlist');
 const $playNextBtn = document.querySelector('#play-next');
 const $playRandomBtn = document.querySelector('#play-random');
 const $lyricsHeader = document.querySelector('#lyrics-header');
+const $body = document.querySelector('body');
 
 $form.addEventListener('submit', handlePlaylist);
 $playBtn.addEventListener('click', handlePlay);
@@ -50,26 +51,15 @@ for (const i of $awesomeBtn) {
 function handleKeyDown(event) {
   if (event.key === 'ArrowDown' && $arrowDown.className === 'pos-abs fas fa-angle-down') {
     handleArrowDown();
-  }
-  if (event.key === 'ArrowUp' && $arrowUp.className === 'pos-abs fas fa-angle-up') {
+  } else if (event.key === 'ArrowUp' && $arrowUp.className === 'pos-abs fas fa-angle-up') {
     handleArrowUp();
-  }
-  if (event.key === 'Enter') {
+  } else if (event.key === 'Enter') {
     if ($modalScore.className === 'modal' || $modalFinalScore.className === 'modal') {
       handleAwesomeBtn();
     } else if ($inputDiv.className === 'center margin-0') {
       handleSubmitLyrics();
     }
-
   }
-  // if (event.key === 'Enter') {
-  //   // if ($modalScore.className === 'modal hidden' && $modalFinalScore.className === 'modal hidden') {
-  //   if ($inputDiv.className === 'center margin-0') {
-  //     handleSubmitLyrics();
-  //   } else {
-  //     handleAwesomeBtn();
-  //   }
-  // }
 }
 
 function handlePlayNext(event) {
@@ -318,6 +308,7 @@ function handleSubmitLyrics(event) {
   }
   $lyricsInput.value = '';
   $overlay.className = 'overlay';
+  $body.className = 'overflow-hidden';
   if (data.lyricCard === data.totalLyricCards - 1) {
     $finalTotalScore.textContent = 'Your final score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
     $modalSong.append(data.song, document.createElement('br'), data.artist);
@@ -352,6 +343,7 @@ function handleAwesomeBtn(event) {
   $modalScore.className = 'modal hidden';
   $modalFinalScore.className = 'modal hidden';
   $overlay.className = 'overlay hidden';
+  $body.className = '';
 }
 
 function handlePlayAgain(event) {
@@ -394,6 +386,7 @@ function renderPlaylist(song, artist) {
   const p = document.createElement('p');
   const br = document.createElement('br');
   const button = document.createElement('button');
+  const playIcon = document.createElement('i');
 
   li.setAttribute('data-playlist-id', data.playlistID);
   row.setAttribute('class', 'row');
@@ -402,9 +395,10 @@ function renderPlaylist(song, artist) {
   columnC.setAttribute('class', 'column-two-tenths center');
   a.setAttribute('href', '#');
   deleteIcon.setAttribute('class', 'fas fa-times delete');
+  playIcon.setAttribute('class', 'fas fa-play');
   columnB.append('"', capitalizeWords(song), '"', br, 'by ', capitalizeWords(artist));
   button.setAttribute('class', 'red-bg');
-  button.textContent = 'Play';
+  button.append('Play ', playIcon);
 
   li.append(row);
   row.append(columnA, columnB, columnC);
