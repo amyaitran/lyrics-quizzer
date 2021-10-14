@@ -20,11 +20,12 @@ h2,
 h3,
 h4 {
   font-weight: 400;
+  margin: 0.4rem auto;
 }
 
 button {
   border-radius: 0.6rem;
-  margin: 1rem 0;
+  margin-top: 1rem;
   padding: 0.6rem 1rem;
   border: none;
   color: white;
@@ -33,7 +34,7 @@ button {
 }
 
 input {
-  margin: 0.5rem;
+  margin: 0 3rem;
   padding: 0.3rem;
   border-radius: 8px;
   border: lightgray 1px solid;
@@ -46,9 +47,9 @@ input {
 
 .card {
   background-color: white;
-  width: 500px;
+  width: 300px;
   border-radius: 3rem;
-  padding: 1rem;
+  padding: 1rem 3rem 2rem 3rem;
   margin: 1rem auto;
   box-shadow: 2px 5px 5px 0 rgba(0, 0, 0, 1);
 }
@@ -67,15 +68,15 @@ input {
   background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 130%;
   z-index: 1;
 }
 
 .modal {
   width: 19rem;
   background-color: white;
-  margin: 8rem auto;
-  padding: 0.1rem;
+  margin: 14rem auto;
+  padding: 1.5rem;
   border-radius: 2rem;
 }
 
@@ -104,8 +105,13 @@ input {
   font-style: italic;
 }
 
+.delete {
+  font-size: 1.3rem;
+  color: red;
+}
+
 #lyrics {
-  padding: 0 4rem 2rem 3rem;
+  padding: 1rem 4rem 2rem 3rem;
 }
 
 #home {
@@ -123,9 +129,4 @@ input {
   padding: 0.5rem;
   background-color: rgba(87, 204, 153, 0.12);
   border: 1px solid black;
-}
-
-.delete {
-  font-size: 1.3rem;
-  color: red;
 }

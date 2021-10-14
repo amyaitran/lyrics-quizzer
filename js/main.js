@@ -1,33 +1,35 @@
-var $form = document.querySelector('#input-song');
-var $song = document.querySelector('#song');
-var $artist = document.querySelector('#artist');
-var $playBtn = document.querySelector('#play-btn');
-var $cards = document.querySelectorAll('.card');
-var $homeIcon = document.querySelector('i');
-var $divCardLyrics = document.querySelector('#card-lyrics');
-var $arrowUp = document.querySelector('#arrowUp');
-var $arrowDown = document.querySelector('#arrowDown');
-var $songHeading = document.querySelector('#songHeading');
-var $artistHeading = document.querySelector('#artistHeading');
-var $lyricsInput = document.querySelector('#lyrics-input');
-var $nextBtn = document.querySelector('#next-btn');
-var $cardIndicator = document.querySelector('h5');
-var $inputDiv = document.querySelector('#input-div');
-var $overlay = document.querySelector('.overlay');
-var $modalScore = document.querySelector('#modal-score');
-var $modalFinalScore = document.querySelector('#modal-final-score');
-var $awesomeBtn = document.querySelectorAll('.awesome-btn');
-var $modalText = document.querySelector('#modal-text');
-var $playAgainBtn = document.querySelector('#play-again');
-var $ul = document.querySelector('ul');
-var $scoreText = document.querySelector('.score-text');
-var $scoreCard = document.querySelector('.card-score');
-var $totalScore = document.querySelector('.total-score');
-var $finalTotalScore = document.querySelector('.final-total-score');
-var $modalSong = document.querySelector('.modal-song');
-var $emptyPlaylistText = document.querySelector('#empty-playlist');
-var $playNextBtn = document.querySelector('#play-next');
-var $playRandomBtn = document.querySelector('#play-random');
+const $form = document.querySelector('#input-song');
+const $song = document.querySelector('#song');
+const $artist = document.querySelector('#artist');
+const $playBtn = document.querySelector('#play-btn');
+const $cards = document.querySelectorAll('.card');
+const $homeIcon = document.querySelector('i');
+const $divCardLyrics = document.querySelector('#card-lyrics');
+const $arrowUp = document.querySelector('#arrowUp');
+const $arrowDown = document.querySelector('#arrowDown');
+const $songHeading = document.querySelector('#songHeading');
+const $artistHeading = document.querySelector('#artistHeading');
+const $lyricsInput = document.querySelector('#lyrics-input');
+const $nextBtn = document.querySelector('#next-btn');
+const $cardIndicator = document.querySelector('h5');
+const $inputDiv = document.querySelector('#input-div');
+const $overlay = document.querySelector('.overlay');
+const $modalScore = document.querySelector('#modal-score');
+const $modalFinalScore = document.querySelector('#modal-final-score');
+const $awesomeBtn = document.querySelectorAll('.awesome-btn');
+const $modalText = document.querySelector('#modal-text');
+const $playAgainBtn = document.querySelector('#play-again');
+const $ul = document.querySelector('ul');
+const $scoreText = document.querySelector('.score-text');
+const $scoreCard = document.querySelector('.card-score');
+const $totalScore = document.querySelector('.total-score');
+const $finalTotalScore = document.querySelector('.final-total-score');
+const $modalSong = document.querySelector('.modal-song');
+const $emptyPlaylistText = document.querySelector('#empty-playlist');
+const $playNextBtn = document.querySelector('#play-next');
+const $playRandomBtn = document.querySelector('#play-random');
+const $lyricsHeader = document.querySelector('#lyrics-header');
+const $body = document.querySelector('body');
 
 $form.addEventListener('submit', handlePlaylist);
 $playBtn.addEventListener('click', handlePlay);
@@ -40,16 +42,47 @@ $ul.addEventListener('click', handleDelete);
 $ul.addEventListener('click', handlePlayFromPlaylist);
 $playNextBtn.addEventListener('click', handlePlayNext);
 $playRandomBtn.addEventListener('click', handlePlayRandom);
-for (var i of $awesomeBtn) {
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('DOMContentLoaded', contentLoaded);
+
+for (const i of $awesomeBtn) {
   i.addEventListener('click', handleAwesomeBtn);
 }
 
+function contentLoaded(event) {
+  if (data.playlist.length !== 0) {
+    $emptyPlaylistText.className = 'hidden center';
+  }
+  for (let i = 0; i < data.playlist.length; i++) {
+    data.playlist[i].id = i;
+    $ul.appendChild(renderPlaylist(data.playlist[i].song, data.playlist[i].artist));
+  }
+}
+
+function handleKeyDown(event) {
+  if (event.key === 'ArrowDown' && $arrowDown.className === 'pos-abs fas fa-angle-down') {
+    handleArrowDown();
+  } else if (event.key === 'ArrowUp' && $arrowUp.className === 'pos-abs fas fa-angle-up') {
+    handleArrowUp();
+  } else if (event.key === 'Enter') {
+    if ($modalScore.className === 'modal' || $modalFinalScore.className === 'modal') {
+      handleAwesomeBtn();
+    } else if ($inputDiv.className === 'center margin-0') {
+      handleSubmitLyrics();
+    }
+  }
+}
+
 function handlePlayNext(event) {
-  data.playlistIndexOfCurrentSong++;
+  if (data.playlistIndexOfCurrentSong !== data.playlist.length - 1) {
+    data.playlistIndexOfCurrentSong++;
+  } else {
+    data.playlistIndexOfCurrentSong = 0;
+  }
   clearData();
   getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
-  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
-  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = `"${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song)}"`;
+  data.artist = `by ${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
@@ -72,14 +105,15 @@ function clearData() {
   data.submittedWords = [];
   data.submittedCard = 0;
   data.runningScore = 0;
+  data.completed = false;
 }
 
 function handlePlayRandom(event) {
   data.playlistIndexOfCurrentSong = Math.floor(Math.random() * data.playlist.length);
   clearData();
   getLyrics(data.playlist[data.playlistIndexOfCurrentSong].song, data.playlist[data.playlistIndexOfCurrentSong].artist);
-  data.song = '"' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song) + '"';
-  data.artist = 'by ' + capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist);
+  data.song = `"${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].song)}"`;
+  data.artist = `by ${capitalizeWords(data.playlist[data.playlistIndexOfCurrentSong].artist)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
@@ -89,11 +123,11 @@ function handlePlayRandom(event) {
 
 function handlePlay(event) {
   event.preventDefault();
-  var $songValue = $song.value;
-  var $artistValue = $artist.value;
+  const $songValue = $song.value;
+  const $artistValue = $artist.value;
   getLyrics($songValue, $artistValue);
-  data.song = '"' + capitalizeWords($songValue) + '"';
-  data.artist = 'by ' + capitalizeWords($artistValue);
+  data.song = `"${capitalizeWords($songValue)}"`;
+  data.artist = `by ${capitalizeWords($artistValue)}`;
   $songHeading.textContent = data.song;
   $artistHeading.textContent = data.artist;
   $cardIndicator.textContent = (data.lyricCard + 1) + '/' + data.totalLyricCards;
@@ -105,10 +139,10 @@ function handlePlay(event) {
 }
 
 function capitalizeWords(string) {
-  var lowerCased = string.toLowerCase();
-  var upperCased = string.toUpperCase();
-  var output = upperCased[0];
-  for (var i = 1; i < string.length; i++) {
+  const lowerCased = string.toLowerCase();
+  const upperCased = string.toUpperCase();
+  let output = upperCased[0];
+  for (let i = 1; i < string.length; i++) {
     if (string[i - 1] === ' ') {
       output += upperCased[i];
     } else {
@@ -136,7 +170,9 @@ function handleArrowDown(event) {
   if (data.lyricCard === data.submittedCard - 1 || data.lyricCard === data.totalLyricCards - 2) {
     data.lyricCard++;
     $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
-    $inputDiv.className = 'center margin-0';
+    if (data.completed === false) {
+      $inputDiv.className = 'center margin-0';
+    }
   } else {
     data.lyricCard++;
   }
@@ -155,7 +191,7 @@ function handleClickHome(event) {
 }
 
 function cardSwap(card) {
-  for (var i = 0; i < $cards.length; i++) {
+  for (let i = 0; i < $cards.length; i++) {
     if (card === $cards[i].getAttribute('data-view')) {
       $cards[i].className = 'card';
     } else {
@@ -165,8 +201,8 @@ function cardSwap(card) {
 }
 
 function lyricsSwap(lyricCard) {
-  var $cardLyrics = document.querySelectorAll('.lyrics');
-  for (var i = 0; i < $cardLyrics.length; i++) {
+  const $cardLyrics = document.querySelectorAll('.lyrics');
+  for (let i = 0; i < $cardLyrics.length; i++) {
     if (parseInt($cardLyrics[i].getAttribute('lyric-card')) === lyricCard) {
       $cardLyrics[i].className = 'lyrics';
     } else {
@@ -176,13 +212,17 @@ function lyricsSwap(lyricCard) {
 }
 
 function getLyrics(song, artist) {
-  var xhr = new XMLHttpRequest();
-  var url = 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + song + '&q_artist=' + artist + '&apikey=ede8285d3054993fe551720e102aa1a6';
-  var sanitizedURL = encodeURIComponent(url);
+  const xhr = new XMLHttpRequest();
+  const url = 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + song + '&q_artist=' + artist + '&apikey=ede8285d3054993fe551720e102aa1a6';
+  const sanitizedURL = encodeURIComponent(url);
   xhr.open('GET', 'https://lfz-cors.herokuapp.com/?url=' + sanitizedURL);
   xhr.responseType = 'json';
+  if (!xhr.response) {
+    $lyricsHeader.textContent = 'Finding song...';
+  }
   xhr.addEventListener('load', function () {
-    var $lyrics = xhr.response.message.body.lyrics.lyrics_body;
+    const $lyrics = xhr.response.message.body.lyrics.lyrics_body;
+    $lyricsHeader.textContent = 'Fill in the lyrics!';
     data.lyrics = $lyrics;
     putLyrics($lyrics);
     lyricsSwap(data.lyricCard);
@@ -191,18 +231,18 @@ function getLyrics(song, artist) {
 }
 
 function putLyrics(lyrics) {
-  var lyricsArray = lyrics.split('\n');
-  var count = 0;
-  var cardCount = 0;
-  for (var i = 0; i < lyricsArray.length - 4; i += 3) {
-    var indexEmptyLine = lyricsArray.indexOf('');
+  const lyricsArray = lyrics.split('\n');
+  let count = 0;
+  let cardCount = 0;
+  for (let i = 0; i < lyricsArray.length - 4; i += 3) {
+    const indexEmptyLine = lyricsArray.indexOf('');
     if (indexEmptyLine > -1) {
       lyricsArray.splice(indexEmptyLine, 1);
     }
-    var lyricLi = document.createElement('li');
-    var lyricP1 = document.createElement('p');
-    var lyricP2 = document.createElement('p');
-    var lyricP3 = document.createElement('p');
+    const lyricLi = document.createElement('li');
+    const lyricP1 = document.createElement('p');
+    const lyricP2 = document.createElement('p');
+    const lyricP3 = document.createElement('p');
     lyricLi.setAttribute('lyric-card', cardCount);
     lyricLi.setAttribute('class', 'lyrics');
     lyricLi.append(lyricP1, lyricP2, lyricP3);
@@ -219,25 +259,25 @@ function putLyrics(lyrics) {
     $divCardLyrics.append(lyricLi);
     data.totalLyricCards++;
   }
-  for (var j = 0; j < cardCount; j++) {
+  for (let j = 0; j < cardCount; j++) {
     randomizeMissingLyrics(j.toString());
   }
   $cardIndicator.textContent = '1/' + data.totalLyricCards;
 }
 
 function randomizeMissingLyrics(lyricCardNumber) {
-  var $cardLyrics = document.querySelectorAll('.lyrics');
-  var $p = $cardLyrics[lyricCardNumber].querySelectorAll('p');
-  var randomLine = Math.floor(Math.random() * $p.length);
+  const $cardLyrics = document.querySelectorAll('.lyrics');
+  const $p = $cardLyrics[lyricCardNumber].querySelectorAll('p');
+  const randomLine = Math.floor(Math.random() * $p.length);
   data.randomLyricLine.push(randomLine);
-  var wordsOfRandomLine = $p[randomLine].textContent.split(' ');
-  var randomIndex = Math.floor(Math.random() * (wordsOfRandomLine.length - 1));
-  var randomActualWords = '';
+  const wordsOfRandomLine = $p[randomLine].textContent.split(' ');
+  const randomIndex = Math.floor(Math.random() * (wordsOfRandomLine.length - 1));
+  let randomActualWords = '';
   randomActualWords = [wordsOfRandomLine[randomIndex], wordsOfRandomLine[randomIndex + 1]];
-  var splitted = $p[randomLine].textContent.split(randomActualWords[0] + ' ' + randomActualWords[1]);
+  const splitted = $p[randomLine].textContent.split(randomActualWords[0] + ' ' + randomActualWords[1]);
   data.missingWords.push(randomActualWords);
-  var $span1 = document.createElement('span');
-  var $span2 = document.createElement('span');
+  const $span1 = document.createElement('span');
+  const $span2 = document.createElement('span');
   $span1.textContent = '___';
   $span1.className = 'span1';
   $span2.textContent = '___';
@@ -247,15 +287,14 @@ function randomizeMissingLyrics(lyricCardNumber) {
 }
 
 function handleSubmitLyrics(event) {
-  var $cardLyrics = document.querySelectorAll('.lyrics');
-  var $p = $cardLyrics[data.lyricCard].querySelectorAll('p');
-  var $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
+  const $cardLyrics = document.querySelectorAll('.lyrics');
+  const $p = $cardLyrics[data.lyricCard].querySelectorAll('p');
+  const $span = $p[data.randomLyricLine[data.lyricCard]].querySelectorAll('span');
   data.submittedWords.push($lyricsInput.value);
-  var $wordsOfInput = $lyricsInput.value.split(' ');
-  var numberOfMissingWords = 2;
-  for (var i = 0; i < numberOfMissingWords; i++) {
-    var strippedWords = data.missingWords[data.lyricCard][i].split('?').join('').split('!').join('').split(',').join('').split('.').join('').split('\'').join('').split('"').join('').split('(').join('').split(')').join('');
-    var noCaps = strippedWords.toLowerCase();
+  const $wordsOfInput = $lyricsInput.value.split(' ');
+  const numberOfMissingWords = 2;
+  for (let i = 0; i < numberOfMissingWords; i++) {
+    const strippedWords = data.missingWords[data.lyricCard][i].toLowerCase().replace(/[?!,."'\\()]/, '');
     if (!$wordsOfInput[i]) {
       $span[i].className = 'incorrect italic';
       if (i === numberOfMissingWords - 1) {
@@ -263,7 +302,7 @@ function handleSubmitLyrics(event) {
       } else {
         $span[i].textContent = data.missingWords[data.lyricCard][i] + ' ';
       }
-    } else if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === noCaps) {
+    } else if ($wordsOfInput[i].toLowerCase() === strippedWords || $wordsOfInput[i].toLowerCase() === data.missingWords[data.lyricCard][i].toLowerCase()) {
       $span[i].className = 'correct';
       data.score++;
       data.runningScore++;
@@ -283,10 +322,12 @@ function handleSubmitLyrics(event) {
   }
   $lyricsInput.value = '';
   $overlay.className = 'overlay';
+  $body.className = 'overflow-hidden';
   if (data.lyricCard === data.totalLyricCards - 1) {
     $finalTotalScore.textContent = 'Your final score: ' + data.runningScore + '/' + data.totalLyricCards * 2;
     $modalSong.append(data.song, document.createElement('br'), data.artist);
     $modalFinalScore.className = 'modal';
+    data.completed = true;
     $inputDiv.className = 'hidden center margin-0';
   } else {
     $modalScore.className = 'modal';
@@ -316,6 +357,7 @@ function handleAwesomeBtn(event) {
   $modalScore.className = 'modal hidden';
   $modalFinalScore.className = 'modal hidden';
   $overlay.className = 'overlay hidden';
+  $body.className = '';
 }
 
 function handlePlayAgain(event) {
@@ -334,6 +376,7 @@ function handlePlayAgain(event) {
   data.submittedWords = [];
   data.submittedCard = 0;
   data.runningScore = 0;
+  data.completed = false;
   putLyrics(data.lyrics);
   lyricsSwap(data.lyricCard);
 }
@@ -347,16 +390,17 @@ function handlePlaylist(event) {
 }
 
 function renderPlaylist(song, artist) {
-  var li = document.createElement('li');
-  var row = document.createElement('div');
-  var columnA = document.createElement('div');
-  var columnB = document.createElement('div');
-  var columnC = document.createElement('div');
-  var a = document.createElement('a');
-  var deleteIcon = document.createElement('i');
-  var p = document.createElement('p');
-  var br = document.createElement('br');
-  var button = document.createElement('button');
+  const li = document.createElement('li');
+  const row = document.createElement('div');
+  const columnA = document.createElement('div');
+  const columnB = document.createElement('div');
+  const columnC = document.createElement('div');
+  const a = document.createElement('a');
+  const deleteIcon = document.createElement('i');
+  const p = document.createElement('p');
+  const br = document.createElement('br');
+  const button = document.createElement('button');
+  const playIcon = document.createElement('i');
 
   li.setAttribute('data-playlist-id', data.playlistID);
   row.setAttribute('class', 'row');
@@ -365,9 +409,10 @@ function renderPlaylist(song, artist) {
   columnC.setAttribute('class', 'column-two-tenths center');
   a.setAttribute('href', '#');
   deleteIcon.setAttribute('class', 'fas fa-times delete');
+  playIcon.setAttribute('class', 'fas fa-play');
   columnB.append('"', capitalizeWords(song), '"', br, 'by ', capitalizeWords(artist));
   button.setAttribute('class', 'red-bg');
-  button.textContent = 'Play';
+  button.append('Play ', playIcon);
 
   li.append(row);
   row.append(columnA, columnB, columnC);
@@ -380,10 +425,10 @@ function renderPlaylist(song, artist) {
 }
 
 function handleDelete(event) {
-  var $li = document.querySelectorAll('li');
+  const $li = document.querySelectorAll('li');
   if (event.target.className === 'fas fa-times delete') {
-    var listID = event.target.closest('li').getAttribute('data-playlist-id');
-    for (var i = 0; i < $li.length; i++) {
+    const listID = event.target.closest('li').getAttribute('data-playlist-id');
+    for (let i = 0; i < $li.length; i++) {
       if ($li[i].getAttribute('data-playlist-id') === listID) {
         $li[i].remove();
         data.playlist.splice(listID, 1);
@@ -397,13 +442,13 @@ function handleDelete(event) {
 
 function handlePlayFromPlaylist(event) {
   if (event.target.className === 'red-bg') {
-    var listID = event.target.closest('li').getAttribute('data-playlist-id');
-    for (var i = 0; i < data.playlist.length; i++) {
+    const listID = event.target.closest('li').getAttribute('data-playlist-id');
+    for (let i = 0; i < data.playlist.length; i++) {
       if (data.playlist[i].id === parseInt(listID)) {
         data.playlistIndexOfCurrentSong = data.playlist.indexOf(data.playlist[i]);
         getLyrics(data.playlist[i].song, data.playlist[i].artist);
-        data.song = '"' + capitalizeWords(data.playlist[i].song) + '"';
-        data.artist = 'by ' + capitalizeWords(data.playlist[i].artist);
+        data.song = `"${capitalizeWords(data.playlist[i].song)}"`;
+        data.artist = `by ${capitalizeWords(data.playlist[i].artist)}`;
       }
     }
     $inputDiv.className = 'center margin-0';

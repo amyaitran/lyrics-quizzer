@@ -38,6 +38,10 @@
   align-items: center;
 }
 
+.display-block {
+  display: block;
+}
+
 .text-align {
   text-align: center;
 }
@@ -70,6 +74,10 @@
   justify-content: space-evenly;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 #arrowUp {
   right: -1.5rem;
   top: 1rem;
@@ -78,4 +86,29 @@
 #arrowDown {
   right: -1.5rem;
   bottom: 1rem;
+}
+
+#indicator {
+  right: -1.6rem;
+  top: -3rem;
+}
+
+#input-div {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 500px) {
+  .card {
+    width: 500px;
+  }
+
+  input {
+    margin: 0.5rem;
+  }
+
+  h4 {
+    margin: 1.4rem auto;
+  }
 }

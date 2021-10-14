@@ -1,8 +1,10 @@
 /* exported data */
 
-var data = {
+const previousPlaylist = localStorage.getItem('javascript-local-storage');
+
+let data = {
   playlistID: 0,
-  playlist: [],
+  playlist: JSON.parse(previousPlaylist),
   playlistIndexOfCurrentSong: null,
   playingFromPlaylist: false,
   artist: null,
@@ -15,6 +17,12 @@ var data = {
   submittedWords: [],
   submittedCard: 0,
   score: 0,
-  runningScore: 0
+  runningScore: 0,
+  completed: false
+};
+
+window.addEventListener('beforeunload', beforeUnload);
+
+function beforeUnload(event) {
+  localStorage.setItem('javascript-local-storage', JSON.stringify(data.playlist));
 }
-;
