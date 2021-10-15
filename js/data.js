@@ -1,10 +1,8 @@
 /* exported data */
 
-const previousPlaylist = localStorage.getItem('javascript-local-storage');
-
 let data = {
   playlistID: 0,
-  playlist: JSON.parse(previousPlaylist),
+  playlist: [],
   playlistIndexOfCurrentSong: null,
   playingFromPlaylist: false,
   artist: null,
@@ -20,6 +18,11 @@ let data = {
   runningScore: 0,
   completed: false
 };
+
+const previousPlaylist = localStorage.getItem('javascript-local-storage');
+if (previousPlaylist !== null) {
+  data.playlist = JSON.parse(previousPlaylist);
+}
 
 window.addEventListener('beforeunload', beforeUnload);
 

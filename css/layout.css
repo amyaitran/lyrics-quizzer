@@ -12,24 +12,24 @@
   flex-wrap: wrap;
 }
 
-.column-full {
-  width: 100%;
-}
-
-.column-half {
-  width: 50%;
-}
-
 .column-one-tenths {
   width: 10%;
+}
+
+.column-two-tenths {
+  width: 20%;
+}
+
+.column-three-tenths {
+  width: 30%;
 }
 
 .column-seven-tenths {
   width: 70%;
 }
 
-.column-two-tenths {
-  width: 20%;
+.column-full {
+  width: 100%;
 }
 
 .center {
