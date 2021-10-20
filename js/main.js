@@ -87,6 +87,7 @@ function handlePlayNext(event) {
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
   $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+  $arrowUp.className = 'hidden pos-abs fas fa-angle-up';
   lyricsSwap(data.lyricCard);
 }
 
@@ -118,6 +119,7 @@ function handlePlayRandom(event) {
   $artistHeading.textContent = data.artist;
   $inputDiv.className = 'center margin-0';
   $arrowDown.className = 'hidden pos-abs fas fa-angle-down';
+  $arrowUp.className = 'hidden pos-abs fas fa-angle-up';
   lyricsSwap(data.lyricCard);
 }
 
@@ -431,7 +433,11 @@ function handleDelete(event) {
     for (let i = 0; i < $li.length; i++) {
       if ($li[i].getAttribute('data-playlist-id') === listID) {
         $li[i].remove();
-        data.playlist.splice(listID, 1);
+      }
+      for (let j = 0; j < data.playlist.length; j++) {
+        if (parseInt(listID) === data.playlist[j].id) {
+          data.playlist.splice(j, 1);
+        }
       }
     }
   }

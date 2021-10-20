@@ -4,7 +4,7 @@ const previousPlaylist = localStorage.getItem('javascript-local-storage');
 
 let data = {
   playlistID: 0,
-  playlist: JSON.parse(previousPlaylist),
+  playlist: [...JSON.parse(previousPlaylist)],
   playlistIndexOfCurrentSong: null,
   playingFromPlaylist: false,
   artist: null,
