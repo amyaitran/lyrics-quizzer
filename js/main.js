@@ -54,8 +54,7 @@ function contentLoaded(event) {
     $emptyPlaylistText.className = 'hidden center';
   }
   for (let i = 0; i < data.playlist.length; i++) {
-    data.playlist[i].id = i;
-    $ul.appendChild(renderPlaylist(data.playlist[i].song, data.playlist[i].artist));
+    $ul.appendChild(renderPlaylist(data.playlist[i].song, data.playlist[i].artist, data.playlist[i].id));
   }
 }
 
@@ -385,13 +384,15 @@ function handlePlayAgain(event) {
 
 function handlePlaylist(event) {
   event.preventDefault();
+  const id = data.playlistID;
   data.playlist.push({ id: data.playlistID, song: event.target.song.value, artist: event.target.artist.value });
   $emptyPlaylistText.className = 'hidden center';
-  $ul.append(renderPlaylist(event.target.song.value, event.target.artist.value));
+  $ul.append(renderPlaylist(event.target.song.value, event.target.artist.value, id));
+  data.playlistID++;
   $form.reset();
 }
 
-function renderPlaylist(song, artist) {
+function renderPlaylist(song, artist, id) {
   const li = document.createElement('li');
   const row = document.createElement('div');
   const columnA = document.createElement('div');
@@ -403,8 +404,7 @@ function renderPlaylist(song, artist) {
   const br = document.createElement('br');
   const button = document.createElement('button');
   const playIcon = document.createElement('i');
-
-  li.setAttribute('data-playlist-id', data.playlistID);
+  li.setAttribute('data-playlist-id', id);
   row.setAttribute('class', 'row');
   columnA.setAttribute('class', 'column-one-tenths center');
   columnB.setAttribute('class', 'column-seven-tenths padding-top');
@@ -422,7 +422,6 @@ function renderPlaylist(song, artist) {
   columnA.append(a);
   columnB.append(p);
   columnC.append(button);
-  data.playlistID++;
   return li;
 }
 
