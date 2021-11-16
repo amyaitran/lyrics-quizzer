@@ -53,16 +53,7 @@ function contentLoaded(event) {
   if (data.playlist.length !== 0) {
     $emptyPlaylistText.className = 'hidden center';
   }
-  // $ul.appendChild(data.playlist.map(playlistSong => {
-  //   return renderPlaylist(data.playlist.song, data.playlist.artist);
-  // }));
-
-  // data.playlist.map(playlistSong => {
-  //   $ul.appendChild(renderPlaylist(data.playlist.song, data.playlist.artist));
-  // });
-
   for (let i = 0; i < data.playlist.length; i++) {
-    // data.playlist[i].id = i;
     $ul.appendChild(renderPlaylist(data.playlist[i].song, data.playlist[i].artist, data.playlist[i].id));
   }
 }
