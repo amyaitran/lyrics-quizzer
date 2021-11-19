@@ -2,6 +2,10 @@
 
 A dynamic HTML, CSS, and JavaScript solo project, made for lyrics enthusiasts who want to test their knowledge of song lyrics.
 
+## Why I Built This Project
+
+This project was built with the intention of consolidating my knowledge of song lyrics and programming. Like many people, I enjoy listening to music and singing songs badly in my car. Now, after building this application, I can sing the *correct* lyrics badly. 
+
 ## Technologies Used
 
 - Javascript
@@ -21,6 +25,10 @@ Try the application live at [https://amyaitran.github.io/lyrics-quizzer/](https:
 - Players can view their scores at the end of the song.
 - Players can add songs to a playlist.
 - Players can choose to play again, play the next song, or play a random song from their playlist.
+
+## Stretch Features
+- Players can adjust the number of missing lyric words.
+- Players can select songs from Musixmatch API's current Top Charts.
 
 ## Preview
 ![Lyrics Quizzer-demo1](https://user-images.githubusercontent.com/30616230/142551115-3bfae50d-496e-43cf-9974-c7f4d7b66f2a.gif)
