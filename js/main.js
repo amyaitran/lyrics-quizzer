@@ -222,6 +222,7 @@ function getLyrics(song, artist) {
     $lyricsHeader.textContent = 'Finding song...';
   }
   xhr.addEventListener('load', function () {
+    $lyricsHeader.textContent = 'Song not found! Please try again :(';
     const $lyrics = xhr.response.message.body.lyrics.lyrics_body;
     $lyricsHeader.textContent = 'Fill in the lyrics!';
     data.lyrics = $lyrics;
