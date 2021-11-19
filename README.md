@@ -53,8 +53,8 @@ Try the application live at [https://amyaitran.github.io/lyrics-quizzer/](https:
     npm install
     ```
 
-1. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
-
+1. Start the project. Navigate to the repository file directory and open 
     ```shell
-    npm run dev
+    index.html
     ```
+    in the browser.
