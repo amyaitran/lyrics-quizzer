@@ -24,8 +24,8 @@ Try the application live at [https://amyaitran.github.io/lyrics-quizzer/](https:
 
 ## Preview
 
-to be added!
-![Lyrics Quizzer](assets/sgt-react.gif)
+![Lyrics Quizzer-demo1]("images/demo-1.gif")
+![Lyrics Quizzer-demo2]("images/demo-2.gif")
 
 ## Development
 
