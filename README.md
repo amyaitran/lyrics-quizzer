@@ -23,8 +23,10 @@ Try the application live at [https://amyaitran.github.io/lyrics-quizzer/](https:
 - Players can choose to play again, play the next song, or play a random song from their playlist.
 
 ## Preview
-![Lyrics Quizzer-demo1](https://user-images.githubusercontent.com/30616230/142543018-17d7ee66-d45f-4189-80b2-2f1bc9b4d462.gif)
-![Lyrics Quizzer-demo2](https://user-images.githubusercontent.com/30616230/142543149-18e3184d-4f1a-48d6-9f0a-6c78f6cd65bc.gif)
+![Lyrics Quizzer-demo1](https://user-images.githubusercontent.com/30616230/142551115-3bfae50d-496e-43cf-9974-c7f4d7b66f2a.gif)
+
+![Lyrics Quizzer-demo2](https://user-images.githubusercontent.com/30616230/142551845-eec49dda-0327-4bee-a642-523be493cd31.gif)
+
 
 ## Development
 
