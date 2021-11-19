@@ -41,6 +41,18 @@ input {
   box-shadow: 1px 2px 2px 0 rgb(201, 201, 201);
 }
 
+button:hover {
+  background-color: rgb(17, 17, 218);
+}
+
+button.red-bg:hover {
+  background-color: rgb(185, 8, 8);
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
 .white-line {
   border-bottom: 3px solid white;
 }

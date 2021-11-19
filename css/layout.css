@@ -100,15 +100,15 @@
 }
 
 @media (min-width: 500px) {
-  .card {
-    width: 500px;
-  }
-
   input {
     margin: 0.5rem;
   }
 
   h4 {
     margin: 1.4rem auto;
+  }
+
+  .card {
+    width: 500px;
   }
 }
