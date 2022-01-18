@@ -2,7 +2,10 @@
 
 let data = {
   playlistID: 0,
-  playlist: [],
+  playlist: [
+    { id: 0, song: 'go your own way', artist: 'fleetwood mac' },
+    { id: 1, song: 'landslide', artist: 'fleetwood mac' }
+  ],
   playlistIndexOfCurrentSong: null,
   playingFromPlaylist: false,
   artist: null,
